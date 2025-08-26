@@ -9,6 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id  = $_SESSION['user_id'];
+$username = $_SESSION['username'];
 $store_id = $_SESSION['store_id'];
 
 // ================== CERRAR SESIÓN ==================
@@ -69,7 +70,7 @@ $ventas     = $conexion->query("SELECT * FROM sales WHERE user_id = $user_id ORD
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<nav class="navbar navbar-expand-lg">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">Stocky</a>
     <div class="collapse navbar-collapse">
@@ -84,7 +85,7 @@ $ventas     = $conexion->query("SELECT * FROM sales WHERE user_id = $user_id ORD
 </nav>
 
 <div class="container mt-4">
-  <h3 class="mb-4">Bienvenido, Tienda #<?php echo $store_id; ?></h3>
+  <h3 class="mb-4">Bienvenido, Tienda <?php echo $username; ?></h3>
 
   <!-- ================== INVENTARIO ================== -->
   <section id="inventario" class="mb-5">

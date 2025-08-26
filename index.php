@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($user && password_verify($password, $user['password_hash'])) {
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['username']= $user['username'];
         $_SESSION['role'] = $user['role'];
         $_SESSION['store_id'] = $user['store_id'];
         header("Location: dashboard.php");
@@ -44,7 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 <div class="container d-flex justify-content-center align-items-center vh-100">
   <div class="card p-4" style="width:350px;">
-    <h4 class="mb-3 text-center">Stocky - Ingreso</h4>
+     <!-- Logo centrado -->
+    <img src="Logo.PNG" alt="Stocky Logo" class="img-fluid mb-3" style="max-height:100px; object-fit:contain;">
+    
+    <h4 class="mb-3 text-center">Inicio de Sesion</h4>
     <?php if($error): ?><div class="alert alert-danger"><?php echo $error; ?></div><?php endif; ?>
     <form method="POST">
       <div class="mb-3">
