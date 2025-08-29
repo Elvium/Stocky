@@ -5,29 +5,60 @@ require 'vendor/autoload.php'; // cargar librerías si se requieren aquí
 // 🔗 Conexión a la base de datos centralizada
 include 'conexion.php';
 
-
 // Procesar login
 $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    // Preparar consulta en mysqli
-    $stmt = $conexion->prepare("SELECT * FROM users WHERE username = ? AND status = 'active'");
+    // Buscar usuario (sin filtrar por status todavía)
+    $stmt = $conexion->prepare("SELECT * FROM users WHERE username = ?");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $resultado = $stmt->get_result();
     $user = $resultado->fetch_assoc();
 
-    if ($user && password_verify($password, $user['password_hash'])) {
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['username']= $user['username'];
-        $_SESSION['role'] = $user['role'];
-        $_SESSION['store_id'] = $user['store_id'];
-        header("Location: dashboard.php");
-        exit;
+    if ($user) {
+        // Si el usuario está bloqueado → no lo dejamos avanzar
+        if ($user['status'] === 'blocked') {
+            $error = '⚠️ Tu cuenta ha sido bloqueada. Contacta con el administrador.';
+        } else {
+            // Caso 1: Primera vez (sin contraseña definida)
+            if (empty($user['password_hash'])) {
+                $new_hash = password_hash($password, PASSWORD_DEFAULT);
+
+                $upd = $conexion->prepare("UPDATE users SET password_hash = ? WHERE id = ?");
+                $upd->bind_param("si", $new_hash, $user['id']);
+                $upd->execute();
+                $upd->close();
+
+                // Iniciar sesión
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
+                $_SESSION['store_id'] = $user['store_id'];
+                header("Location: dashboard.php");
+                exit;
+            }
+
+            // Caso 2: Ya tiene contraseña → verificar
+            if (password_verify($password, $user['password_hash'])) {
+                if ($user['status'] === 'active') {
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['username'] = $user['username'];
+                    $_SESSION['role'] = $user['role'];
+                    $_SESSION['store_id'] = $user['store_id'];
+                    header("Location: dashboard.php");
+                    exit;
+                } else {
+                    $error = 'Tu cuenta no está activa. Contacta con el administrador.';
+                }
+            } else {
+                $error = 'Contraseña incorrecta.';
+            }
+        }
     } else {
-        $error = 'Usuario o contraseña incorrectos o usuario bloqueado.';
+        $error = 'Usuario no encontrado.';
     }
 }
 ?>
@@ -48,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <!-- Logo centrado -->
     <img src="Logo.PNG" alt="Stocky Logo" class="img-fluid mb-3" style="max-height:100px; object-fit:contain;">
     
-    <h4 class="mb-3 text-center">Inicio de Sesion</h4>
+    <h4 class="mb-3 text-center">Inicio de Sesión</h4>
     <?php if($error): ?><div class="alert alert-danger"><?php echo $error; ?></div><?php endif; ?>
     <form method="POST">
       <div class="mb-3">
