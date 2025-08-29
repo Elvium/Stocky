@@ -114,7 +114,14 @@ if ($role === 'user') {
     $productos  = $conexion->query("SELECT * FROM products WHERE user_id = $user_id");
     $ventas     = $conexion->query("SELECT * FROM sales WHERE user_id = $user_id ORDER BY created_at DESC");
 }
-?>
+ if (isset($_SESSION['blocked_message'])): ?>
+  <div class="global-message error">
+    <?= $_SESSION['blocked_message']; ?>
+  </div>
+  <?php unset($_SESSION['blocked_message']); ?>
+<?php endif; ?>
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
