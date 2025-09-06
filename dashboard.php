@@ -53,25 +53,59 @@ if ($role === 'super') {
     }
 
     // Bloquear/desbloquear usuarios
-    if (isset($_GET['toggle_user'])) {
-        $uid = intval($_GET['toggle_user']);
-        $res = $conexion->query("SELECT status FROM users WHERE id = $uid");
-        if ($res && $res->num_rows > 0) {
-            $row = $res->fetch_assoc();
-            $new_status = ($row['status'] === 'active') ? 'blocked' : 'active';
+   if (isset($_GET['toggle_user'])) {
+    $uid = intval($_GET['toggle_user']);
+    $res = $conexion->query("SELECT status, role, store_id FROM users WHERE id = $uid");
+
+    if ($res && $res->num_rows > 0) {
+        $row = $res->fetch_assoc();
+        $new_status = ($row['status'] === 'active') ? 'blocked' : 'active';
+
+        // Si es "user", actualiza toda la tienda (incluyendo sellers)
+        if ($row['role'] === 'user') {
+            $store_id = intval($row['store_id']);
+            $conexion->query("UPDATE users SET status = '$new_status' WHERE store_id = $store_id");
+        } else {
+            // Si no es "user", solo afecta al usuario individual
             $conexion->query("UPDATE users SET status = '$new_status' WHERE id = $uid");
         }
+    }
+
+    header("Location: dashboard.php");
+    exit;
+}
+
+
+    // Cargar todos los usuarios
+    $usuarios = $conexion->query("SELECT u.id, u.username, u.store_id, u.status,u.role, s.name AS store_name 
+                                  FROM users u 
+                                  LEFT JOIN stores s ON u.store_id = s.id
+                                  WHERE u.role IN ('user', 'seller') 
+                                  ORDER BY u.id DESC");
+}
+
+// Crear nuevo seller
+if (isset($_POST['nuevo_seller'])) {
+    $nombre_seller = trim($_POST['nombre_seller']);
+    $tienda_id = intval($_POST['tienda_id']);
+
+    if (!empty($nombre_seller) && $tienda_id > 0) {
+        $password_hash = null;
+        $role_seller = "seller";
+        $status = "active";
+
+        $stmt = $conexion->prepare("INSERT INTO users (username, password_hash, role, store_id, status) VALUES (?,?,?,?,?)");
+        $stmt->bind_param("sssis", $nombre_seller, $password_hash, $role_seller, $tienda_id, $status);
+        $stmt->execute();
+        $stmt->close();
+
+        // 🔄 Recargar dashboard para refrescar la tabla
         header("Location: dashboard.php");
         exit;
     }
-
-    // Cargar todos los usuarios
-    $usuarios = $conexion->query("SELECT u.id, u.username, u.store_id, u.status, s.name AS store_name 
-                                  FROM users u 
-                                  LEFT JOIN stores s ON u.store_id = s.id
-                                  WHERE u.role = 'user' 
-                                  ORDER BY u.id DESC");
 }
+
+
 
 // ================== FUNCIONALIDAD USUARIOS TIENDA ==================
 if ($role === 'user') {
@@ -131,24 +165,8 @@ if ($role === 'user') {
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Stocky</a>
-    <div class="collapse navbar-collapse">
-      <ul class="navbar-nav me-auto">
-        <?php if ($role === 'user'): ?>
-          <li class="nav-item"><a class="nav-link" href="#inventario">Inventario</a></li>
-          <li class="nav-item"><a class="nav-link" href="#productos">Productos</a></li>
-          <li class="nav-item"><a class="nav-link" href="#ventas">Ventas</a></li>
-        <?php elseif ($role === 'super'): ?>
-          <li class="nav-item"><a class="nav-link" href="#gestion">Gestión</a></li>
-        <?php endif; ?>
-      </ul>
-      <a href="dashboard.php?logout=1" class="btn btn-danger btn-sm">Cerrar sesión</a>
-    </div>
-  </div>
-</nav>
-
+<?php include 'navbar.php'; ?>
+<main class="container my-5">
 <div class="container mt-4">
   <h3 class="mb-4">Bienvenido, <?php echo ($role === 'super') ? "Administrador" : "Tienda $username"; ?></h3>
 
@@ -166,26 +184,57 @@ if ($role === 'user') {
         </div>
       </form>
 
+      <h4>➕ Crear nuevo vendedor (Seller)</h4>
+<form method="post" class="row g-3 mb-3">
+  <input type="hidden" name="nuevo_seller" value="1">
+  <div class="col-md-4">
+    <input type="text" name="nombre_seller" class="form-control" placeholder="Nombre del vendedor" required>
+  </div>
+  <div class="col-md-4">
+    <select name="tienda_id" class="form-control" required>
+      <option value="">-- Selecciona tienda --</option>
+      <?php
+      $tiendas = $conexion->query("SELECT id, name FROM stores ORDER BY name ASC");
+      while($t = $tiendas->fetch_assoc()):
+      ?>
+        <option value="<?php echo $t['id']; ?>"><?php echo $t['name']; ?></option>
+      <?php endwhile; ?>
+    </select>
+  </div>
+  <div class="col-md-4">
+    <button class="btn btn-success w-100">Crear Seller</button>
+  </div>
+</form>
+
       <h4>👥 Usuarios registrados</h4>
       <input type="text" id="buscar" class="form-control mb-3" placeholder="Buscar tienda...">
 
       <table class="table table-bordered" id="tablaUsuarios">
         <thead>
-          <tr><th>ID</th><th>Tienda</th><th>Status</th><th>Acción</th></tr>
+          <tr><th>ID</th><th>Usuario</th><th>Rol</th><th>Tienda</th><th>Status</th><th>Acción</th></tr>
+
         </thead>
         <tbody>
           <?php while($row = $usuarios->fetch_assoc()): ?>
           <tr>
-            <td><?php echo $row['store_id']; ?></td>
-            <td><?php echo $row['username']; ?></td>
-            <td><?php echo $row['status']; ?></td>
-            <td>
-              <a href="dashboard.php?toggle_user=<?php echo $row['id']; ?>" 
-                 class="btn btn-sm <?php echo ($row['status'] === 'active') ? 'btn-danger' : 'btn-success'; ?>">
-                 <?php echo ($row['status'] === 'active') ? 'Bloquear' : 'Desbloquear'; ?>
-              </a>
-            </td>
-          </tr>
+  <td><?php echo $row['id']; ?></td>
+  <td><?php echo $row['username']; ?></td>
+  <td><?php echo ucfirst($row['role']); ?></td>
+  <td><?php echo $row['store_name']; ?></td>
+  <td><?php echo $row['status']; ?></td>
+  <td>
+  <?php if ($row['role'] === 'user'): ?>
+    <a href="dashboard.php?toggle_user=<?php echo $row['id']; ?>" 
+       class="btn btn-sm <?php echo ($row['status'] === 'active') ? 'btn-danger' : 'btn-success'; ?>">
+       <?php echo ($row['status'] === 'active') ? 'Bloquear' : 'Desbloquear'; ?>
+    </a>
+  <?php else: ?>
+    <span class="text-muted">N/A</span>
+  <?php endif; ?>
+</td>
+
+</tr>
+
           <?php endwhile; ?>
         </tbody>
       </table>
@@ -204,103 +253,66 @@ if ($role === 'user') {
     </script>
 
   <?php elseif ($role === 'user'): ?>
-    <!-- ================== INVENTARIO ================== -->
-    <section id="inventario" class="mb-5">
-      <h4>📦 Inventario</h4>
-      <form method="post" class="row g-3 mb-3">
-        <input type="hidden" name="nuevo_material" value="1">
-        <div class="col-md-4">
-          <input type="text" name="nombre" class="form-control" placeholder="Nombre del material" required>
+<div class="container py-4">
+  <h2 class="mb-4">Panel de Usuario</h2>
+  <div class="row g-4">
+    
+    <!-- INVENTARIO -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📦</div>
+          <h5 class="card-title">Inventario</h5>
+          <p class="card-text">Ingresa los insumos de tu tienda</p>
+          <a href="inventario.php" class="btn btn-primary">Ir a Inventario</a>
         </div>
-        <div class="col-md-3">
-          <input type="number" step="0.01" name="cantidad" class="form-control" placeholder="Cantidad" required>
-        </div>
-        <div class="col-md-3">
-          <input type="text" name="unidad" class="form-control" placeholder="Unidad (kg, lt, etc)" required>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-primary w-100">Agregar</button>
-        </div>
-      </form>
+      </div>
+    </div>
 
-      <table class="table table-bordered">
-        <thead>
-          <tr><th>Nombre</th><th>Cantidad</th><th>Unidad</th><th>Fecha</th></tr>
-        </thead>
-        <tbody>
-          <?php while($row = $inventario->fetch_assoc()): ?>
-          <tr>
-            <td><?php echo $row['name']; ?></td>
-            <td><?php echo $row['quantity']; ?></td>
-            <td><?php echo $row['unit']; ?></td>
-            <td><?php echo $row['created_at']; ?></td>
-          </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
-    </section>
+    <!-- PRODUCTOS -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🍽️</div>
+          <h5 class="card-title">Productos</h5>
+          <p class="card-text">Ingresa los ingredientes para los productos de tu menú</p>
+          <a href="productos.php" class="btn btn-primary">Ir a Productos</a>
+        </div>
+      </div>
+    </div>
 
-    <!-- ================== PRODUCTOS ================== -->
-    <section id="productos" class="mb-5">
-      <h4>🍽️ Productos</h4>
-      <form method="post" class="row g-3 mb-3">
-        <input type="hidden" name="nuevo_producto" value="1">
-        <div class="col-md-6">
-          <input type="text" name="nombre" class="form-control" placeholder="Nombre del producto" required>
+    <!-- PEDIDOS -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
+          <h5 class="card-title">Pedidos</h5>
+          <p class="card-text">Realiza y registra los pedidos para los clientes.</p>
+          <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
         </div>
-        <div class="col-md-4">
-          <input type="number" step="0.01" name="precio" class="form-control" placeholder="Precio" required>
-        </div>
-        <div class="col-md-2">
-          <button class="btn btn-success w-100">Agregar</button>
-        </div>
-      </form>
+      </div>
+    </div>
 
-      <table class="table table-bordered">
-        <thead>
-          <tr><th>Nombre</th><th>Precio</th><th>Fecha</th></tr>
-        </thead>
-        <tbody>
-          <?php while($row = $productos->fetch_assoc()): ?>
-          <tr>
-            <td><?php echo $row['name']; ?></td>
-            <td>$<?php echo number_format($row['price'], 2); ?></td>
-            <td><?php echo $row['created_at']; ?></td>
-          </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- ================== VENTAS ================== -->
-    <section id="ventas" class="mb-5">
-      <h4>💵 Ventas</h4>
-      <form method="post" class="row g-3 mb-3">
-        <input type="hidden" name="nueva_venta" value="1">
-        <div class="col-md-10">
-          <input type="number" step="0.01" name="total" class="form-control" placeholder="Total de la venta" required>
+    <!-- INFORMES -->
+    <div class="col-md-6 col-lg-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📊</div>
+          <h5 class="card-title">Informes</h5>
+          <p class="card-text">Descarga los informes mensuales y diarios para la contabilidad de tu negocio.</p>
+          <a href="informes.php" class="btn btn-primary">Ir a Informes</a>
         </div>
-        <div class="col-md-2">
-          <button class="btn btn-warning w-100">Registrar</button>
-        </div>
-      </form>
+      </div>
+    </div>
 
-      <table class="table table-bordered">
-        <thead>
-          <tr><th>ID</th><th>Total</th><th>Fecha</th></tr>
-        </thead>
-        <tbody>
-          <?php while($row = $ventas->fetch_assoc()): ?>
-          <tr>
-            <td><?php echo $row['id']; ?></td>
-            <td>$<?php echo number_format($row['total'], 2); ?></td>
-            <td><?php echo $row['created_at']; ?></td>
-          </tr>
-          <?php endwhile; ?>
-        </tbody>
-      </table>
-    </section>
-  <?php endif; ?>
+  </div>
 </div>
+<?php endif; ?>
+</div>
+</main>
+
+
+
+<?php include 'footer.php'; ?>
 </body>
 </html>

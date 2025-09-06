@@ -1,0 +1,26 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contacto - Stocky</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<?php include 'navbar.php'; ?>
+<main class="container my-5">
+<div class="container container-section mt-4 text-center">
+  <img src="Logo2.PNG" alt="Stocky Logo" class="img-fluid mb-3" height="150" ">
+  <h2 class="section-title">Contacto</h2>
+  <p class="lead">¿Necesitas ayuda? Estamos disponibles para atenderte.</p>
+  <p><strong>Correo:</strong> soporte@stocky.com</p>
+  <p><strong>Teléfono:</strong> +57 300 123 4567</p>
+  <p><strong>Horario de atención:</strong> Seminocturno (2:00 p.m. - 2:00 a.m.)</p>
+</div>
+</main>
+<?php include 'footer.php'; ?>
+
+</body>
+</html>
