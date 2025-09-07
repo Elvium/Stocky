@@ -21,10 +21,11 @@ $productos_stmt->bind_param("ii", $store_id, $store_id);
 $productos_stmt->execute();
 $productos_result = $productos_stmt->get_result();
 
-// --- Procesar pedido al enviar desde JS ---
+// --- Procesar pedido ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
     $pedido = json_decode($_POST['pedido'], true); 
     $comment = $_POST['comment'] ?? '';
+    $client  = $_POST['client'] ?? ''; // 🔹 nuevo campo cliente
 
     if (!$pedido || !is_array($pedido)) {
         echo "Pedido vacío o mal formado";
@@ -37,13 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
         $total += $item['qty'] * $item['price'];
     }
 
-    // Insertar en sales
-    $stmt = $conexion->prepare("INSERT INTO sales (user_id, store_id, comment, total) VALUES (?, ?, ?, ?)");
-    $stmt->bind_param("iisd", $user_id, $store_id, $comment, $total);
+    // Insertar en sales con cliente
+    $stmt = $conexion->prepare("INSERT INTO sales (user_id, store_id, client, comment, total) VALUES (?, ?, ?, ?, ?)");
+    $stmt->bind_param("iissd", $user_id, $store_id, $client, $comment, $total);
     $stmt->execute();
     $sale_id = $stmt->insert_id;
 
-    // Insertar cada producto en sales_items
+    // Insertar productos en sales_items
     $item_stmt = $conexion->prepare("INSERT INTO sales_items (sale_id, product_id, qty, store_id, unit_price) VALUES (?, ?, ?, ?, ?)");
     foreach ($pedido as $item) {
         $unit_price = $item['price'];
@@ -54,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
     // Marcar variable para saltar trigger
     $conexion->query("SET @SKIP_INVENTORY_LOG = 1");
 
-    // --- Descontar insumos del inventario ---
+    // --- Descontar insumos ---
     foreach ($pedido as $item) {
         $product_id = $item['id'];
         $qty_ordered = $item['qty'];
@@ -109,6 +110,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
         <a href="dashboard.php" class="btn btn-primary btn-sm">⬅ Volver al Inicio</a>
   </div>
 
+  <!-- Cliente -->
+  <div class="mb-3">
+    <label for="client" class="form-label">Nombre del Cliente</label>
+    <input type="text" id="client" class="form-control" placeholder="Ingrese el nombre del cliente" required>
+  </div>
+
+  <!-- Observaciones -->
+  <div class="mb-4">
+    <label for="comment" class="form-label">Observaciones</label>
+    <textarea id="comment" class="form-control" rows="2" placeholder="Notas especiales para este pedido..."></textarea>
+  </div>
+
   <!-- Tabla de productos -->
   <table class="table table-bordered table-striped">
     <thead>
@@ -136,12 +149,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
       <?php endwhile; ?>
     </tbody>
   </table>
-
-  <!-- Observaciones -->
-  <div class="mb-4">
-    <label for="comment" class="form-label">Observaciones</label>
-    <textarea id="comment" class="form-control" rows="2" placeholder="Notas especiales para este pedido..."></textarea>
-  </div>
 
   <!-- Pedido actual -->
   <h3 class="mt-5">Pedido actual</h3>
@@ -320,8 +327,15 @@ document.getElementById('finalizarPedido').addEventListener('click', ()=>{
         alert('No hay productos en el pedido.');
         return;
     }
+    const clientName = document.getElementById('client').value.trim();
+    if(!clientName){
+        alert('Por favor ingresa el nombre del cliente.');
+        return;
+    }
+
     document.getElementById('pedidoInput').value = JSON.stringify(Object.values(pedido));
     document.getElementById('commentInput').value = document.getElementById('comment').value;
+    document.getElementById('clientInput').value  = clientName;
     document.getElementById('pedidoForm').submit();
 });
 </script>
@@ -329,6 +343,7 @@ document.getElementById('finalizarPedido').addEventListener('click', ()=>{
 <form id="pedidoForm" method="POST" style="display:none;">
   <input type="hidden" name="pedido" id="pedidoInput">
   <input type="hidden" name="comment" id="commentInput">
+  <input type="hidden" name="client" id="clientInput"><!-- 🔹 nuevo campo -->
 </form>
 </body>
 </html>

@@ -6,13 +6,31 @@ require 'verificar_sesion.php';
 $user_id = $_SESSION['user_id'];
 $store_id = $_SESSION['store_id'];
 
-// Obtener pedidos de la tienda actual
-$stmt = $conexion->prepare("
-    SELECT id, total, comment, status, created_at
+// --- Cambiar estado a Entregado ---
+if (isset($_GET['entregar'])) {
+    $sale_id = intval($_GET['entregar']);
+    $update = $conexion->prepare("UPDATE sales SET status = 'Closed' WHERE id = ? AND store_id = ?");
+    $update->bind_param("ii", $sale_id, $store_id);
+    $update->execute();
+    header("Location: entregados.php");
+    exit;
+}
+
+// --- Filtro por estado ---
+$estadoFiltro = $_GET['estado'] ?? 'todos';
+$sql = "
+    SELECT id, client, total, comment, status, created_at
     FROM sales
     WHERE store_id = ?
-    ORDER BY created_at DESC
-");
+";
+if ($estadoFiltro === 'Active') {
+    $sql .= " AND status = 'Active'";
+} elseif ($estadoFiltro === 'Closed') {
+    $sql .= " AND status = 'Closed'";
+}
+$sql .= " ORDER BY created_at DESC";
+
+$stmt = $conexion->prepare($sql);
 $stmt->bind_param("i", $store_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -22,7 +40,7 @@ $result = $stmt->get_result();
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Pedidos Entregados - Stocky</title>
+  <title>Pedidos - Stocky</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
@@ -35,23 +53,34 @@ $result = $stmt->get_result();
     <a href="dashboard.php" class="btn btn-primary btn-sm">⬅ Volver al Inicio</a>
   </div>
 
-  <table class="table table-bordered table-striped">
+  <!-- Filtro por estado -->
+  <form method="get" class="mb-3 d-flex align-items-center gap-2">
+    <label for="estado" class="form-label m-0">Filtrar por estado:</label>
+    <select name="estado" id="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+      <option value="todos" <?= $estadoFiltro === 'todos' ? 'selected' : '' ?>>Todos</option>
+      <option value="Active" <?= $estadoFiltro === 'Active' ? 'selected' : '' ?>>Pendientes</option>
+      <option value="Closed" <?= $estadoFiltro === 'Closed' ? 'selected' : '' ?>>Entregados</option>
+    </select>
+  </form>
+
+  <table class="table table-bordered table-striped align-middle">
     <thead>
       <tr>
-     
         <th>Fecha</th>
+        <th>Cliente</th>
         <th>Comentario</th>
-        <th>Total</th>
+        <th class="text-end">Total</th>
         <th>Estado</th>
+        <th>Acción</th>
       </tr>
     </thead>
     <tbody>
       <?php while($row = $result->fetch_assoc()): ?>
         <tr>
-     
           <td><?= $row['created_at'] ?></td>
+          <td><?= htmlspecialchars($row['client']) ?></td>
           <td><?= htmlspecialchars($row['comment']) ?></td>
-          <td>$<?= number_format($row['total'], 2) ?></td>
+          <td class="text-end">$<?= number_format($row['total'], 2) ?></td>
           <td>
             <?php if ($row['status'] === 'Active'): ?>
               <span class="badge bg-warning text-dark">PENDIENTE</span>
@@ -59,6 +88,13 @@ $result = $stmt->get_result();
               <span class="badge bg-success">ENTREGADO</span>
             <?php else: ?>
               <span class="badge bg-secondary"><?= strtoupper($row['status']) ?></span>
+            <?php endif; ?>
+          </td>
+          <td>
+            <?php if ($row['status'] === 'Active'): ?>
+              <a href="?entregar=<?= $row['id'] ?>" class="btn btn-success btn-sm">Marcar como Entregado</a>
+            <?php else: ?>
+              <button class="btn btn-secondary btn-sm" disabled>✔ Entregado</button>
             <?php endif; ?>
           </td>
         </tr>
