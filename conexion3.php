@@ -4,9 +4,9 @@
    ============================================================ */
 
 $host = "localhost";
-$user = "c2880144_stocky";
-$password = "03liwaZAmi";
-$dbname = "c2880144_stocky";
+$user = "root";
+$password = "";
+$dbname = "stocky";
 
 // Crear conexión
 $conexion = new mysqli($host, $user, $password, $dbname);

@@ -1,6 +1,5 @@
 <?php
 session_start();
-require 'vendor/autoload.php'; // cargar librerías si se requieren aquí
 
 // 🔗 Conexión a la base de datos centralizada
 include 'conexion.php';
