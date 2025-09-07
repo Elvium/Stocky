@@ -18,7 +18,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <main class="container my-5">
 <div class="container mt-5 pt-4">
   <div class="text-center mb-4">
-    <img src="Logo2.PNG" alt="Stocky Logo" height="180" class="mb-3">
+    <img src="Logo2.png" alt="Stocky Logo" height="180" class="mb-3">
     <h2 class="fw-bold">Guía de uso de Stocky</h2>
     <p class="text-muted">Sigue estos pasos para administrar correctamente tu inventario, productos y ventas.</p>
   </div>

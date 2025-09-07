@@ -12,7 +12,7 @@
 <?php include 'navbar.php'; ?>
 <main class="container my-5">
 <div class="container container-section mt-4 text-center">
-  <img src="Logo2.PNG" alt="Stocky Logo" class="img-fluid mb-3" height="150" ">
+  <img src="Logo2.png" alt="Stocky Logo" class="img-fluid mb-3" height="150" ">
   <h2 class="section-title">Contacto</h2>
   <p class="lead">¿Necesitas ayuda? Estamos disponibles para atenderte.</p>
   <p><strong>Correo:</strong> oscar.ronaldo.96@gmail.com</p>
