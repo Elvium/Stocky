@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 
 // --- Procesar creación de producto ---
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_name'])) {
-    $name = strtoupper(trim($_POST['product_name']));
+    $name = trim($_POST['product_name']);
     $price = floatval($_POST['price']);
 
     // Insertar en products

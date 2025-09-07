@@ -250,12 +250,6 @@ button.btn {
   text-align: center;
 }
 
-input[type="text"],
-input[type="number"],
-select {
-  text-transform: uppercase;
-}
-
 .no-uppercase {
   text-transform: none !important;
 }

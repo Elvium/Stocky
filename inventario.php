@@ -24,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 
 // --- Procesar el formulario de agregar ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
-    $name = strtoupper(trim($_POST['name']));
-    $brand = strtoupper(trim($_POST['brand']));
+    $name = trim($_POST['name']);
+    $brand = trim($_POST['brand']);
     $price = floatval($_POST['price']);
     $quantity = intval($_POST['quantity']);
     $size = intval($_POST['size']); // usado para multiplicar cantidad
