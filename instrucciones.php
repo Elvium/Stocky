@@ -102,11 +102,11 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
       <p>
-        En la sección de <strong>Ventas</strong> registras los pedidos que realizan tus clientes. 
+        En la sección de <strong>Pedidos</strong> registras los pedidos que realizan tus clientes. 
         Aquí seleccionas productos, ajustas cantidades y confirmas la venta.
       </p>
       <ul>
-        <li>Desde el menú <strong>Inicio</strong>, ingresa a la sección <strong>Ventas</strong>.</li>
+        <li>Desde el menú <strong>Inicio</strong>, ingresa a la sección <strong>Pedidos</strong>.</li>
         <li>Digita el <em>nombre del cliente</em> (opcional, pero recomendable para llevar control).</li>
         <li>Agrega observaciones si el pedido tiene especificaciones (ejemplo: “sin cebolla”, “sin salsas”).</li>
         <li>Selecciona los productos con el botón <strong>Agregar</strong>. 
@@ -181,9 +181,9 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
         Estos reportes te ayudarán a llevar un control contable más organizado y a identificar tendencias en tu negocio.
       </p>
       <ul>
-        <li>Revisa el <strong>historial de ventas</strong> de cada día para conocer todos los pedidos realizados.</li>
-        <li>Consulta las <strong>estadísticas de productos más vendidos</strong> para identificar qué ofrece mejores resultados.</li>
-        <li>Monitorea el <strong>consumo de insumos en tiempo real</strong>, asegurando que siempre tengas stock disponible.</li>
+        <li>Desde el menú <strong>Inicio</strong>, ingresa a la sección <strong>Informes</strong>.</li>
+        <li>Selecciona la fecha que quieras obtener el <strong>Informe del Dia</strong> para conocer los pedidos realizados y tus productos mas vendidos ese dia.</li>
+        <li>Selecciona el rango de fechas para obtener un <strong>Informe General</strong> para obtener un reporte de gastos vs ingresos de tu negocio durante ese periodo.</li>
       </ul>
       <div class="alert alert-info mt-2">
         ℹ️ <strong>Tip:</strong> Los reportes diarios te permiten llevar la caja del día, mientras que los reportes mensuales facilitan la contabilidad general y el análisis de tu negocio.

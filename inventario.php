@@ -41,17 +41,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     $result = $check->get_result();
 
     if ($row = $result->fetch_assoc()) {
-        // Ya existe → actualizar cantidad
-        $new_quantity = $row['quantity'] + $total_quantity;
-        $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ? WHERE id = ?");
-        $update->bind_param("idi", $new_quantity, $price, $row['id']);
-        $update->execute();
-    } else {
-        // No existe → insertar nuevo
-        $insert = $conexion->prepare("INSERT INTO inventory (store_id, user_id, name, brand, quantity, price, unit) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        $insert->bind_param("iissids", $store_id, $user_id, $name, $brand, $total_quantity, $price, $unit);
-        $insert->execute();
-    }
+    // Ya existe → actualizar cantidad
+    $new_quantity = $row['quantity'] + $total_quantity;
+    $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ? WHERE id = ?");
+    $update->bind_param("idi", $new_quantity, $price, $row['id']);
+    $update->execute();
+
+    // 🔹 Registrar en inventory_logs (UPDATE)
+    $log = $conexion->prepare("INSERT INTO inventory_logs 
+        (inventory_id, store_id, action, name, quantity, unit, price) 
+        VALUES (?, ?, 'update', ?, ?, ?, ?)");
+    $log->bind_param("iisdss", 
+        $row['id'],        // inventory_id
+        $store_id,         // store_id
+        $name,             // name
+        $new_quantity,     // quantity
+        $unit,             // unit
+        $price             // price
+    );
+    $log->execute();
+
+} else {
+    // No existe → insertar nuevo
+    $insert = $conexion->prepare("INSERT INTO inventory 
+        (store_id, user_id, name, brand, quantity, price, unit) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $insert->bind_param("iissids", $store_id, $user_id, $name, $brand, $total_quantity, $price, $unit);
+    $insert->execute();
+
+    $new_id = $conexion->insert_id; // ID del nuevo insumo
+
+    // 🔹 Registrar en inventory_logs (INSERT)
+    $log = $conexion->prepare("INSERT INTO inventory_logs 
+        (inventory_id, store_id, action, name, quantity, unit, price) 
+        VALUES (?, ?, 'insert', ?, ?, ?, ?)");
+    $log->bind_param("iisdss", 
+        $new_id,           // inventory_id
+        $store_id,         // store_id
+        $name,             // name
+        $total_quantity,   // quantity
+        $unit,             // unit
+        $price             // price
+    );
+    $log->execute();
+}
+
 }
 
 // --- Obtener insumos existentes de la tienda ---
