@@ -76,6 +76,7 @@ $brands_result = $brands->get_result();
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Inventario</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -155,6 +156,7 @@ $brands_result = $brands->get_result();
 
     <!-- Tabla de inventario -->
     <h3 class="mt-5">Inventario Actual</h3>
+    <div class="table-responsive">
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -186,6 +188,7 @@ $brands_result = $brands->get_result();
         <?php endwhile; ?>
         </tbody>
     </table>
+    </div>
 </div>
 </main>
 <!-- Footer -->

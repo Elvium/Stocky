@@ -15,9 +15,9 @@
   <img src="Logo2.PNG" alt="Stocky Logo" class="img-fluid mb-3" height="150" ">
   <h2 class="section-title">Contacto</h2>
   <p class="lead">¿Necesitas ayuda? Estamos disponibles para atenderte.</p>
-  <p><strong>Correo:</strong> soporte@stocky.com</p>
-  <p><strong>Teléfono:</strong> +57 300 123 4567</p>
-  <p><strong>Horario de atención:</strong> Seminocturno (2:00 p.m. - 2:00 a.m.)</p>
+  <p><strong>Correo:</strong> oscar.ronaldo.96@gmail.com</p>
+  <p><strong>Teléfono:</strong> +57 301 362-6090</p>
+  <p><strong>Horario de atención:</strong> Seminocturno (2:00 p.m. - 10:00 p.m.)</p>
 </div>
 </main>
 <?php include 'footer.php'; ?>

@@ -160,6 +160,7 @@ if ($role === 'user') {
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dashboard - Stocky</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
@@ -298,9 +299,9 @@ if ($role === 'user') {
       <div class="card text-center shadow-sm h-100">
         <div class="card-body">
           <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
-          <h5 class="card-title">Entregados</h5>
+          <h5 class="card-title">Estado de Pedidos</h5>
           <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
-          <a href="entregados.php" class="btn btn-primary">Ver Pedidos</a>
+          <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
         </div>
       </div>
     </div>
@@ -313,6 +314,37 @@ if ($role === 'user') {
           <h5 class="card-title">Informes</h5>
           <p class="card-text">Descarga los informes mensuales y diarios para la contabilidad de tu negocio.</p>
           <a href="informes.php" class="btn btn-primary">Ir a Informes</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<?php elseif ($role === 'seller'): ?>
+<div class="container py-4">
+  <h2 class="mb-4">Panel del Vendedor</h2>
+  <div class="row g-4">
+
+    <!-- PEDIDOS -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
+          <h5 class="card-title">Pedidos</h5>
+          <p class="card-text">Realiza y registra los pedidos de los clientes.</p>
+          <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ESTADO DE PEDIDOS -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
+          <h5 class="card-title">Estado de Pedidos</h5>
+          <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
+          <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
         </div>
       </div>
     </div>

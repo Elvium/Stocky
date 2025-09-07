@@ -96,6 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pedidos - Stocky</title>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
@@ -107,7 +108,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 <div class="container mt-4">
   <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="m-0">Realizar Pedidos</h2>
-        <a href="dashboard.php" class="btn btn-primary btn-sm">⬅ Volver al Inicio</a>
+        <a href="dashboard.php" class="btn btn-dashboard btn-sm">⬅ Volver al Inicio</a>
   </div>
 
   <!-- Cliente -->
@@ -123,6 +124,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
   </div>
 
   <!-- Tabla de productos -->
+    <div class="table-responsive">
   <table class="table table-bordered table-striped">
     <thead>
       <tr>
@@ -149,6 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
       <?php endwhile; ?>
     </tbody>
   </table>
+            </div>
 
   <!-- Pedido actual -->
   <h3 class="mt-5">Pedido actual</h3>

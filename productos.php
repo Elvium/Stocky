@@ -90,6 +90,7 @@ $productos_result = $productos->get_result();
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Productos</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
@@ -150,6 +151,7 @@ $productos_result = $productos->get_result();
 
     <!-- Tabla de productos -->
     <h3 class="mt-5">Productos existentes</h3>
+    <div class="table-responsive">
     <table class="table table-bordered table-striped">
         <thead>
             <tr>
@@ -175,6 +177,7 @@ $productos_result = $productos->get_result();
         <?php endwhile; ?>
         </tbody>
     </table>
+    </div>
 </div>
 </main>
 <?php include 'footer.php'; ?>
