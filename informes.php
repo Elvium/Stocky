@@ -24,9 +24,9 @@ if (isset($_POST['fecha'])) {
     $resTotal = $stmt->get_result()->fetch_assoc();
     $total_dia = $resTotal['total_dia'] ?? 0;
 
-    // 2. Pedidos del día
+    // 2. Pedidos del día (solo hora, cliente, total)
     $stmt = $conexion->prepare("
-        SELECT id, client, total, created_at
+        SELECT client, total, created_at
         FROM sales
         WHERE store_id = ? AND DATE(created_at) = ?
         ORDER BY created_at DESC
@@ -62,9 +62,9 @@ if (isset($_POST['fecha'])) {
     <style>
         body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
         h1 { color: #2c7a7b; text-align: center; margin-bottom: 5px; }
-        h3 { color: #555; text-align: center; margin: 0; }
+        h3 { color: #333; text-align: left; margin-top: 20px; }
         .fecha { text-align: right; font-size: 12px; color: #333; margin-bottom: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
         th { background-color: #2c7a7b; color: white; }
         .total { font-weight: bold; font-size: 13px; text-align: right; padding: 8px; }
@@ -75,20 +75,21 @@ if (isset($_POST['fecha'])) {
     <h1>Informe de Ventas del Día</h1>
     <h3>' . htmlspecialchars($store_name) . '</h3>
 
-    <h3 style="margin-top:20px;">Pedidos del Día</h3>
+    <h3>Pedidos del Día</h3>
     <table>
         <thead>
             <tr>
+                <th>Hora</th>
                 <th>Cliente</th>
-                <th>Fecha</th>
                 <th>Total</th>
             </tr>
         </thead>
         <tbody>';
         while ($row = $pedidos->fetch_assoc()) {
+            $hora = date("H:i", strtotime($row['created_at']));
             $html .= '<tr>
+                <td>' . $hora . '</td>
                 <td>' . htmlspecialchars($row['client']) . '</td>
-                <td>' . $row['created_at'] . '</td>
                 <td>$' . number_format($row['total'], 2) . '</td>
             </tr>';
         }
@@ -102,7 +103,7 @@ if (isset($_POST['fecha'])) {
         </tfoot>
     </table>
 
-    <h3 style="margin-top:25px;">Productos Vendidos</h3>
+    <h3>Productos Vendidos</h3>
     <table>
         <thead>
             <tr>
@@ -112,7 +113,9 @@ if (isset($_POST['fecha'])) {
             </tr>
         </thead>
         <tbody>';
+        $total_productos = 0;
         while ($row = $productos->fetch_assoc()) {
+            $total_productos += $row['subtotal'];
             $html .= '<tr>
                 <td>' . htmlspecialchars($row['name']) . '</td>
                 <td>' . $row['cantidad'] . '</td>
@@ -121,6 +124,12 @@ if (isset($_POST['fecha'])) {
         }
     $html .= '
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2" class="total">TOTAL PRODUCTOS VENDIDOS:</td>
+                <td class="total">$' . number_format($total_productos, 2) . '</td>
+            </tr>
+        </tfoot>
     </table>
 
     <div class="footer">Generado por Stocky</div>
