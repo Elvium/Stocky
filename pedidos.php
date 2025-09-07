@@ -6,7 +6,7 @@ require_once "conexion.php";
 $user_id = $_SESSION['user_id'];
 $store_id = $_SESSION['store_id'];
 
-// Obtener productos con stock disponible
+// --- Obtener productos con stock disponible ---
 $productos_stmt = $conexion->prepare("
     SELECT p.id, p.name, p.price,
         (SELECT MIN(FLOOR(i.quantity / pm.qty_needed))
@@ -20,6 +20,75 @@ $productos_stmt = $conexion->prepare("
 $productos_stmt->bind_param("ii", $store_id, $store_id);
 $productos_stmt->execute();
 $productos_result = $productos_stmt->get_result();
+
+// --- Procesar pedido al enviar desde JS ---
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
+    $pedido = json_decode($_POST['pedido'], true); 
+    $comment = $_POST['comment'] ?? '';
+
+    if (!$pedido || !is_array($pedido)) {
+        echo "Pedido vacío o mal formado";
+        exit;
+    }
+
+    // Calcular total
+    $total = 0;
+    foreach ($pedido as $item) {
+        $total += $item['qty'] * $item['price'];
+    }
+
+    // Insertar en sales
+    $stmt = $conexion->prepare("INSERT INTO sales (user_id, store_id, comment, total) VALUES (?, ?, ?, ?)");
+    $stmt->bind_param("iisd", $user_id, $store_id, $comment, $total);
+    $stmt->execute();
+    $sale_id = $stmt->insert_id;
+
+    // Insertar cada producto en sales_items
+    $item_stmt = $conexion->prepare("INSERT INTO sales_items (sale_id, product_id, qty, store_id, unit_price) VALUES (?, ?, ?, ?, ?)");
+    foreach ($pedido as $item) {
+        $unit_price = $item['price'];
+        $item_stmt->bind_param("iiidi", $sale_id, $item['id'], $item['qty'], $store_id, $unit_price);
+        $item_stmt->execute();
+    }
+
+    // Marcar variable para saltar trigger
+    $conexion->query("SET @SKIP_INVENTORY_LOG = 1");
+
+    // --- Descontar insumos del inventario ---
+    foreach ($pedido as $item) {
+        $product_id = $item['id'];
+        $qty_ordered = $item['qty'];
+
+        $insumos_stmt = $conexion->prepare("
+            SELECT inventory_id, qty_needed 
+            FROM product_materials 
+            WHERE product_id = ?
+        ");
+        $insumos_stmt->bind_param("i", $product_id);
+        $insumos_stmt->execute();
+        $insumos_result = $insumos_stmt->get_result();
+
+        while ($insumo = $insumos_result->fetch_assoc()) {
+            $inventory_id = $insumo['inventory_id'];
+            $qty_needed = $insumo['qty_needed'];
+
+            $total_to_deduct = $qty_needed * $qty_ordered;
+
+            $update_inv = $conexion->prepare("
+                UPDATE inventory 
+                SET quantity = quantity - ? 
+                WHERE id = ? AND store_id = ?
+            ");
+            $update_inv->bind_param("iii", $total_to_deduct, $inventory_id, $store_id);
+            $update_inv->execute();
+        }
+    }
+
+    $conexion->query("SET @SKIP_INVENTORY_LOG = NULL");
+
+    header("Location: pedidos.php?success=1");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +104,6 @@ $productos_result = $productos_stmt->get_result();
 
 <main class="container my-5">
 <div class="container mt-4">
-
   <div class="d-flex justify-content-between align-items-center mb-3">
         <h2 class="m-0">Realizar Pedidos</h2>
         <a href="dashboard.php" class="btn btn-primary btn-sm">⬅ Volver al Inicio</a>
@@ -87,9 +155,7 @@ $productos_result = $productos_stmt->get_result();
         <th>Acción</th>
       </tr>
     </thead>
-    <tbody>
-      <!-- Filas dinámicas -->
-    </tbody>
+    <tbody></tbody>
     <tfoot>
       <tr>
         <th colspan="3">Total</th>
@@ -99,96 +165,170 @@ $productos_result = $productos_stmt->get_result();
     </tfoot>
   </table>
 
-  <button id="finalizarPedido" class="btn btn-success mt-3">Finalizar Pedido</button>
-
+  <button id="finalizarPedido" class="btn btn-primary mt-3">Finalizar Pedido</button>
 </div>
 </main>
 <?php include 'footer.php'; ?>
 
 <script>
-// Manejo del pedido
-const pedido = {}; // {productId: {id, name, price, qty, stock}}
+// --- Datos de insumos ---
+const productMaterials = {};
+<?php
+$insumos_stmt = $conexion->prepare("SELECT product_id, inventory_id, qty_needed FROM product_materials");
+$insumos_stmt->execute();
+$insumos_res = $insumos_stmt->get_result();
+while($row = $insumos_res->fetch_assoc()): ?>
+if(!productMaterials[<?= $row['product_id'] ?>]) productMaterials[<?= $row['product_id'] ?>] = [];
+productMaterials[<?= $row['product_id'] ?>].push({inventory_id: <?= $row['inventory_id'] ?>, qty_needed: <?= $row['qty_needed'] ?>});
+<?php endwhile; ?>
 
-function actualizarTablaPedido() {
-  const tbody = document.querySelector('#pedidoTable tbody');
-  tbody.innerHTML = '';
-  let total = 0;
+// --- Inventario inicial ---
+const inventoryStock = {};
+<?php
+$inventory_stmt = $conexion->prepare("SELECT id, quantity FROM inventory WHERE store_id = ?");
+$inventory_stmt->bind_param("i", $store_id);
+$inventory_stmt->execute();
+$inventory_res = $inventory_stmt->get_result();
+while($inv = $inventory_res->fetch_assoc()): ?>
+inventoryStock[<?= $inv['id'] ?>] = <?= $inv['quantity'] ?>;
+<?php endwhile; ?>
 
-  Object.values(pedido).forEach(item => {
-    const subtotal = item.price * item.qty;
-    total += subtotal;
+// ---------------- JS de lógica de pedido ----------------
+const pedido = {}; // {id: {id, name, price, qty}}
 
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td>${item.name}</td>
-      <td>${item.qty}</td>
-      <td>$${item.price.toFixed(2)}</td>
-      <td>$${subtotal.toFixed(2)}</td>
-      <td>
-        <button class="btn btn-sm btn-success plus-btn">+</button>
-        <button class="btn btn-sm btn-danger minus-btn">-</button>
-      </td>
-    `;
-    tbody.appendChild(tr);
-
-    tr.querySelector('.plus-btn').addEventListener('click', () => {
-      if(item.qty < item.stock) {
-        item.qty++;
-        actualizarTablaPedido();
-      }
+// 🔹 Recalcular inventario restante global según el pedido
+function calcularInventarioRestante() {
+    const restante = {...inventoryStock};
+    Object.values(pedido).forEach(item => {
+        if (productMaterials[item.id]) {
+            productMaterials[item.id].forEach(pm => {
+                restante[pm.inventory_id] -= pm.qty_needed * item.qty;
+            });
+        }
     });
-    tr.querySelector('.minus-btn').addEventListener('click', () => {
-      item.qty--;
-      if(item.qty <= 0) {
-        delete pedido[item.id];
-      }
-      actualizarTablaPedido();
-    });
-  });
-
-  document.getElementById('totalPedido').textContent = `$${total.toFixed(2)}`;
+    return restante;
 }
 
-// Agregar producto desde tabla principal
-document.querySelectorAll('.agregar-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const tr = btn.closest('tr');
-    const id = tr.dataset.productId;
-    const name = tr.cells[0].textContent;
-    const price = parseFloat(tr.dataset.price);
-    const stock = parseInt(tr.dataset.stock);
+// 🔹 Stock máximo disponible para un producto
+function calcularStockProducto(pid, inventario = null) {
+    if (!productMaterials[pid]) return 0;
+    if (!inventario) inventario = calcularInventarioRestante();
 
-    if(!pedido[id]) {
-      pedido[id] = {id, name, price, qty: 1, stock};
-    }
-    actualizarTablaPedido();
-  });
+    let maxStock = Infinity;
+    productMaterials[pid].forEach(pm => {
+        const available = inventario[pm.inventory_id] || 0;
+        maxStock = Math.min(maxStock, Math.floor(available / pm.qty_needed));
+    });
+
+    return Math.max(0, maxStock);
+}
+
+// 🔹 Actualizar stock en la tabla principal
+function actualizarStockTabla() {
+    const inventarioRestante = calcularInventarioRestante();
+
+    document.querySelectorAll('tr[data-product-id]').forEach(tr => {
+        const pid = tr.dataset.productId;
+        const stockDisponible = calcularStockProducto(pid, inventarioRestante);
+
+        tr.dataset.stock = stockDisponible;
+        tr.querySelector('.stock').textContent = stockDisponible;
+
+        const btn = tr.querySelector('.agregar-btn');
+        if (btn) {
+            btn.disabled = stockDisponible <= 0 || pedido[pid];
+            btn.textContent = pedido[pid] ? "Ya agregado" : "Agregar";
+            btn.classList.toggle("btn-secondary", pedido[pid] || stockDisponible <= 0);
+            btn.classList.toggle("btn-primary", !pedido[pid] && stockDisponible > 0);
+        }
+    });
+}
+
+// 🔹 Actualizar la tabla del pedido
+function actualizarTablaPedido(){
+    const tbody = document.querySelector('#pedidoTable tbody');
+    tbody.innerHTML = '';
+    let total = 0;
+
+    const inventarioRestante = calcularInventarioRestante();
+
+    Object.values(pedido).forEach(item => {
+        const subtotal = item.price * item.qty;
+        total += subtotal;
+
+        const tr = document.createElement('tr');
+        const stockDisponible = calcularStockProducto(item.id, inventarioRestante);
+
+        tr.innerHTML = `
+            <td>${item.name}</td>
+            <td>${item.qty}</td>
+            <td>$${item.price.toFixed(2)}</td>
+            <td>$${subtotal.toFixed(2)}</td>
+            <td>
+                <button class="btn btn-sm btn-success plus-btn" ${stockDisponible <= 0 ? "disabled" : ""}>+</button>
+                <button class="btn btn-sm btn-danger minus-btn">-</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+
+        // "+"
+        tr.querySelector('.plus-btn').addEventListener('click', () => {
+            const inventarioRestante = calcularInventarioRestante();
+            if (calcularStockProducto(item.id, inventarioRestante) > 0) {
+                item.qty++;
+                actualizarTablaPedido();
+            }
+        });
+
+        // "-"
+        tr.querySelector('.minus-btn').addEventListener('click', () => {
+            if (item.qty > 1) {
+                item.qty--;
+            } else {
+                delete pedido[item.id];
+            }
+            actualizarTablaPedido();
+        });
+    });
+
+    document.getElementById('totalPedido').textContent = `$${total.toFixed(2)}`;
+    actualizarStockTabla();
+}
+
+
+// 🔹 Agregar producto desde tabla principal
+document.querySelectorAll('.agregar-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+        const tr = btn.closest('tr');
+        const id = tr.dataset.productId;
+        const name = tr.cells[0].textContent;
+        const price = parseFloat(tr.dataset.price);
+
+        const inventarioRestante = calcularInventarioRestante();
+        if(calcularStockProducto(id, inventarioRestante) > 0){
+            if(!pedido[id]){
+                pedido[id] = {id, name, price, qty:1};
+                actualizarTablaPedido();
+            }
+        }
+    });
 });
 
-// Finalizar pedido (insertar en BD)
-document.getElementById('finalizarPedido').addEventListener('click', () => {
-  if(Object.keys(pedido).length === 0) {
-    alert('No hay productos en el pedido.');
-    return;
-  }
-
-  const comment = document.getElementById('comment').value;
-
-  fetch('guardar_pedido.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({user_id: <?= $user_id ?>, store_id: <?= $store_id ?>, comment, items: Object.values(pedido)})
-  })
-  .then(res => res.json())
-  .then(data => {
-    if(data.success) {
-      alert('Pedido registrado correctamente.');
-      location.reload();
-    } else {
-      alert('Error al registrar el pedido: ' + data.error);
+// 🔹 Finalizar pedido
+document.getElementById('finalizarPedido').addEventListener('click', ()=>{
+    if(Object.keys(pedido).length === 0){
+        alert('No hay productos en el pedido.');
+        return;
     }
-  });
+    document.getElementById('pedidoInput').value = JSON.stringify(Object.values(pedido));
+    document.getElementById('commentInput').value = document.getElementById('comment').value;
+    document.getElementById('pedidoForm').submit();
 });
 </script>
+
+<form id="pedidoForm" method="POST" style="display:none;">
+  <input type="hidden" name="pedido" id="pedidoInput">
+  <input type="hidden" name="comment" id="commentInput">
+</form>
 </body>
 </html>

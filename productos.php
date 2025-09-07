@@ -4,7 +4,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['store_id'])) {
     header("Location: login.php");
     exit();
 }
-
+require 'verificar_sesion.php'; 
 require_once "conexion.php";
 $user_id = $_SESSION['user_id'];
 $store_id = $_SESSION['store_id'];
