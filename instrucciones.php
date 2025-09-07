@@ -107,7 +107,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
       </p>
       <ul>
         <li>Desde el menú <strong>Inicio</strong>, ingresa a la sección <strong>Pedidos</strong>.</li>
-        <li>Digita el <em>nombre del cliente</em> (opcional, pero recomendable para llevar control).</li>
+        <li>Digita el <em>nombre del cliente</em> <span class="text-danger">⚠️ Es obligatorio digitar el nombre del cliente para el registro de la venta.</span></li>
         <li>Agrega observaciones si el pedido tiene especificaciones (ejemplo: “sin cebolla”, “sin salsas”).</li>
         <li>Selecciona los productos con el botón <strong>Agregar</strong>. 
           <span class="text-danger">⚠️ Si un producto no puede prepararse por falta de insumos, aparecerá deshabilitado.</span>
@@ -141,7 +141,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
       <p>
         En esta sección podrás <strong>marcar los pedidos como entregados</strong>.  
         Esto significa que el cliente ya recibió su pedido y la venta ha finalizado.  
-        ⚠️ Es importante cambiar el estado de los pedidos para llevar un control claro entre los que aún están pendientes y los que ya se completaron.
+        <span class="text-danger">⚠️ Es importante cambiar el estado de los pedidos para llevar un control claro entre los que aún están pendientes y los que ya se completaron.</span>
       </p>
       <ul>
         
@@ -177,7 +177,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
       <p>
-        En esta sección podrás generar <strong>informes detallados</strong> de las ventas y el consumo de insumos. 
+        En esta sección podrás generar <strong>informes detallados</strong> de las ventas y el consumo de insumos en formato PDF. 
         Estos reportes te ayudarán a llevar un control contable más organizado y a identificar tendencias en tu negocio.
       </p>
       <ul>

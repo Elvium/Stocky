@@ -342,7 +342,7 @@ if ($role === 'user') {
       <div class="card text-center shadow-sm h-100">
         <div class="card-body">
           <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
-          <h5 class="card-title">Estado de Pedidos</h5>
+          <h5 class="card-title">Estado de pedidos</h5>
           <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
           <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
         </div>

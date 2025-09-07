@@ -155,7 +155,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 
   <!-- Pedido actual -->
   <h3 class="mt-5">Pedido actual</h3>
-  <table class="table table-bordered" id="pedidoTable">
+  <div class="table-responsive">
+  <table class="table table-bordered table-striped" id="pedidoTable">
     <thead>
       <tr>
         <th>Producto</th>
@@ -174,7 +175,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
       </tr>
     </tfoot>
   </table>
-
+</div>
   <button id="finalizarPedido" class="btn btn-primary mt-3">Finalizar Pedido</button>
 </div>
 </main>
