@@ -52,7 +52,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
         </li>
       </ul>
       <div class="alert alert-info mt-2">
-        ℹ️ <strong>Importante:</strong> para un mejor control, siempre registra los insumos en la unidad de medida más pequeña que utilices en tus productos.  
+        ℹ️ <strong>Tip:</strong> para un mejor control, siempre registra los insumos en la unidad de medida más pequeña que utilices en tus productos.  
         Ejemplo: si usas leche en tazas, registra en mililitros.
       </div>
     </div>
@@ -121,7 +121,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
         </li>
       </ul>
       <div class="alert alert-info mt-2">
-        ℹ️ <strong>Nota:</strong> cada pedido confirmado quedará guardado en el historial, lo que te permitirá consultar ventas anteriores.
+        ℹ️ <strong>Tip:</strong> cada pedido confirmado quedará guardado en el historial, lo que te permitirá consultar ventas anteriores.
       </div>
     </div>
   </div>
@@ -156,8 +156,8 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
           </ul>
         </li>
       </ul>
-      <p class="text-primary">
-        💡 Consejo: Actualiza siempre el estado de los pedidos al momento de la entrega.  
+      <p class="alert alert-info mt-2">
+        ℹ️ <strong>Tip:</strong> Actualiza siempre el estado de los pedidos al momento de la entrega.  
         Así tendrás un registro exacto de las ventas completadas y evitarás confusiones en el seguimiento de pedidos.
       </p>
     </div>
@@ -199,6 +199,5 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 </main>
 <?php include 'footer.php'; ?>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
