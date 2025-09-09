@@ -113,7 +113,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 
   <!-- Cliente -->
   <div class="mb-3">
-    <label for="client" class="form-label">Nombre del Cliente</label>
+    <label for="client" class="form-label">Nombre cliente/Mesa</label>
     <input type="text" id="client" class="form-control" placeholder="Ingrese el nombre del cliente" required>
   </div>
 

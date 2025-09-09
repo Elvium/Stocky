@@ -326,3 +326,23 @@ button.btn {
 .table-responsive {
   overflow-x: auto;
 }
+.receta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.receta-nombre {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.receta-precio {
+  background: #fff;
+  color: #1f3b4d;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  white-space: nowrap;
+  margin-right: 10px;
+}

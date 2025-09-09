@@ -6,9 +6,19 @@ require 'verificar_sesion.php';
 $user_id = $_SESSION['user_id'];
 $store_id = $_SESSION['store_id'];
 
-// --- Cambiar estado a Entregado ---
+// --- Cambiar estado a Entregado (Active → Pending) ---
 if (isset($_GET['entregar'])) {
     $sale_id = intval($_GET['entregar']);
+    $update = $conexion->prepare("UPDATE sales SET status = 'Pending' WHERE id = ? AND store_id = ?");
+    $update->bind_param("ii", $sale_id, $store_id);
+    $update->execute();
+    header("Location: entregados.php");
+    exit;
+}
+
+// --- Cambiar estado a Pagado (Pending → Closed) ---
+if (isset($_GET['pagar'])) {
+    $sale_id = intval($_GET['pagar']);
     $update = $conexion->prepare("UPDATE sales SET status = 'Closed' WHERE id = ? AND store_id = ?");
     $update->bind_param("ii", $sale_id, $store_id);
     $update->execute();
@@ -25,6 +35,8 @@ $sql = "
 ";
 if ($estadoFiltro === 'Active') {
     $sql .= " AND status = 'Active'";
+} elseif ($estadoFiltro === 'Pending') {
+    $sql .= " AND status = 'Pending'";
 } elseif ($estadoFiltro === 'Closed') {
     $sql .= " AND status = 'Closed'";
 }
@@ -50,7 +62,7 @@ $result = $stmt->get_result();
 
 <main class="container my-5">
   <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="m-0">Pedidos (Pendientes y Entregados)</h2>
+    <h2 class="m-0">Pedidos (Pendientes, Entregados y Pagados)</h2>
     <a href="dashboard.php" class="btn btn-dashboard btn-sm">⬅ Volver al Inicio</a>
   </div>
 
@@ -60,49 +72,55 @@ $result = $stmt->get_result();
     <select name="estado" id="estado" class="form-select form-select-sm" onchange="this.form.submit()">
       <option value="todos" <?= $estadoFiltro === 'todos' ? 'selected' : '' ?>>Todos</option>
       <option value="Active" <?= $estadoFiltro === 'Active' ? 'selected' : '' ?>>Pendientes</option>
-      <option value="Closed" <?= $estadoFiltro === 'Closed' ? 'selected' : '' ?>>Entregados</option>
+      <option value="Pending" <?= $estadoFiltro === 'Pending' ? 'selected' : '' ?>>Entregados</option>
+      <option value="Closed" <?= $estadoFiltro === 'Closed' ? 'selected' : '' ?>>Pagados</option>
     </select>
   </form>
-<div class="table-responsive">
-  <table class="table table-bordered table-striped align-middle">
-    <thead>
-      <tr>
-        <th>Fecha</th>
-        <th>Cliente</th>
-        <th>Comentario</th>
-        <th class="text-end">Total</th>
-        <th>Estado</th>
-        <th>Acción</th>
-      </tr>
-    </thead>
-    <tbody>
-      <?php while($row = $result->fetch_assoc()): ?>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-striped align-middle">
+      <thead>
         <tr>
-          <td><?= $row['created_at'] ?></td>
-          <td><?= htmlspecialchars($row['client']) ?></td>
-          <td><?= htmlspecialchars($row['comment']) ?></td>
-          <td class="text-end">$<?= number_format($row['total'], 2) ?></td>
-          <td>
-            <?php if ($row['status'] === 'Active'): ?>
-              <span class="badge bg-warning text-dark">PENDIENTE</span>
-            <?php elseif ($row['status'] === 'Closed'): ?>
-              <span class="badge bg-success">ENTREGADO</span>
-            <?php else: ?>
-              <span class="badge bg-secondary"><?= strtoupper($row['status']) ?></span>
-            <?php endif; ?>
-          </td>
-          <td>
-            <?php if ($row['status'] === 'Active'): ?>
-              <a href="?entregar=<?= $row['id'] ?>" class="btn btn-success btn-sm">Marcar como Entregado</a>
-            <?php else: ?>
-              <button class="btn btn-secondary btn-sm" disabled>✔ Entregado</button>
-            <?php endif; ?>
-          </td>
+          <th>Fecha</th>
+          <th>Cliente</th>
+          <th>Comentario</th>
+          <th class="text-end">Total</th>
+          <th>Estado</th>
+          <th>Acción</th>
         </tr>
-      <?php endwhile; ?>
-    </tbody>
-  </table>
-            </div>
+      </thead>
+      <tbody>
+        <?php while($row = $result->fetch_assoc()): ?>
+          <tr>
+            <td><?= $row['created_at'] ?></td>
+            <td><?= htmlspecialchars($row['client']) ?></td>
+            <td><?= htmlspecialchars($row['comment']) ?></td>
+            <td class="text-end">$<?= number_format($row['total'], 2) ?></td>
+            <td>
+              <?php if ($row['status'] === 'Active'): ?>
+                <span class="badge bg-warning text-dark">PENDIENTE</span>
+              <?php elseif ($row['status'] === 'Pending'): ?>
+                <span class="badge bg-danger text-dark">ENTREGADO</span>
+              <?php elseif ($row['status'] === 'Closed'): ?>
+                <span class="badge bg-success">PAGADO</span>
+              <?php else: ?>
+                <span class="badge bg-secondary"><?= strtoupper($row['status']) ?></span>
+              <?php endif; ?>
+            </td>
+            <td>
+              <?php if ($row['status'] === 'Active'): ?>
+                <a href="?entregar=<?= $row['id'] ?>" class="btn btn-success btn-sm">Marcar como Entregado</a>
+              <?php elseif ($row['status'] === 'Pending'): ?>
+                <a href="?pagar=<?= $row['id'] ?>" class="btn btn-primary btn-sm">Marcar como Pagado</a>
+              <?php elseif ($row['status'] === 'Closed'): ?>
+                <button class="btn btn-secondary btn-sm" disabled>✔ Pagado</button>
+              <?php endif; ?>
+            </td>
+          </tr>
+        <?php endwhile; ?>
+      </tbody>
+    </table>
+  </div>
 </main>
 
 <?php include 'footer.php'; ?>

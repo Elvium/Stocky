@@ -142,6 +142,12 @@ if ($role === 'user') {
         $stmt->execute();
         $stmt->close();
     }
+// Aviso de insumos bajos en stock
+$insumos_bajos = $conexion->query("
+    SELECT name, quantity, unit, `limit`
+    FROM inventory
+    WHERE user_id = $user_id AND quantity < `limit`
+");
 
     // Consultas
     $inventario = $conexion->query("SELECT * FROM inventory WHERE user_id = $user_id");
@@ -170,6 +176,22 @@ if ($role === 'user') {
 <main class="container my-5">
 <div class="container mt-4">
   <h3 class="mb-4">Bienvenido, <?php echo ($role === 'super') ? "Administrador" : "Tienda $username"; ?></h3>
+
+<!-- ================== AVISO DE INSUMOS INSUFICIENTES ================== -->
+  <?php if ( $insumos_bajos && $insumos_bajos->num_rows > 0): ?>
+  <div class="alert alert-info">
+    <strong>⚠️ Atención:</strong> Los siguientes insumos están por agotarse:
+    <ul class="mb-0">
+      <?php while($i = $insumos_bajos->fetch_assoc()): ?>
+        <li>
+          <?php echo $i['name']; ?> → 
+          <?php echo $i['quantity'] . " " . $i['unit']; ?> 
+          (límite mínimo: <?php echo $i['limit']; ?>)
+        </li>
+      <?php endwhile; ?>
+    </ul>
+  </div>
+<?php endif; ?>
 
   <?php if ($role === 'super'): ?>
     <!-- ================== GESTIÓN ADMIN ================== -->
@@ -282,6 +304,18 @@ if ($role === 'user') {
       </div>
     </div>
 
+    <!-- RECETAS -->
+  <div class="col-md-6 col-lg-3">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body">
+        <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📖</div>
+        <h5 class="card-title">Recetas</h5>
+        <p class="card-text">Consulta las recetas disponibles de tu tienda.</p>
+        <a href="recetas.php" class="btn btn-primary">Ir a Recetas</a>
+      </div>
+    </div>
+  </div>
+
     <!-- PEDIDOS -->
     <div class="col-md-6 col-lg-3">
       <div class="card text-center shadow-sm h-100">
@@ -324,6 +358,18 @@ if ($role === 'user') {
 <div class="container py-4">
   <h2 class="mb-4">Panel del Vendedor</h2>
   <div class="row g-4">
+
+    <!-- RECETAS -->
+  <div class="col-md-6 col-lg-4">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body">
+        <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📖</div>
+        <h5 class="card-title">Recetas</h5>
+        <p class="card-text">Consulta las recetas disponibles de tu tienda.</p>
+        <a href="recetas.php" class="btn btn-primary">Ir a Recetas</a>
+      </div>
+    </div>
+  </div>
 
     <!-- PEDIDOS -->
     <div class="col-md-6 col-lg-4">

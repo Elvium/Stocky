@@ -16,7 +16,9 @@ if (!isset($_GET['id'])) {
 }
 
 $id = intval($_GET['id']);
-$stmt = $conexion->prepare("SELECT id, name, brand, quantity, unit FROM inventory WHERE id = ? AND store_id = ?");
+$stmt = $conexion->prepare("SELECT id, name, brand, quantity, unit, price, `limit` 
+                             FROM inventory 
+                             WHERE id = ? AND store_id = ?");
 $stmt->bind_param("ii", $id, $store_id);
 $stmt->execute();
 $product = $stmt->get_result()->fetch_assoc();
@@ -30,17 +32,20 @@ if (!$product) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_name = trim($_POST['name']);
     $new_quantity = intval($_POST['quantity']);
+    $new_price = floatval($_POST['price']);
+    $new_limit = intval($_POST['limit']);
 
     if ($new_quantity < 0) $new_quantity = 0;
+    if ($new_limit < 0) $new_limit = 0;
 
     // Marcar variable para saltar trigger
     $conexion->query("SET @SKIP_INVENTORY_LOG = 1");
 
     // Ejecutar el UPDATE
     $update = $conexion->prepare("UPDATE inventory 
-                                  SET name = ?, quantity = ? 
+                                  SET name = ?, quantity = ?, price = ?, `limit` = ? 
                                   WHERE id = ? AND store_id = ?");
-    $update->bind_param("siii", $new_name, $new_quantity, $id, $store_id);
+    $update->bind_param("sdiisi", $new_name, $new_quantity, $new_price, $new_limit, $id, $store_id);
     $update->execute();
 
     // Limpiar variable
@@ -69,22 +74,38 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="POST" class="p-4 bg-light rounded shadow-sm">
             <div class="mb-3">
                 <label class="form-label">Nombre del insumo</label>
-                <input type="text" name="name" class="form-control" value="<?= htmlspecialchars($product['name']) ?>" required>
+                <input type="text" name="name" class="form-control" 
+                       value="<?= htmlspecialchars($product['name']) ?>" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Cantidad actual</label>
-                <input type="number" name="quantity" class="form-control" value="<?= htmlspecialchars($product['quantity']) ?>" min="0" required>
+                <input type="number" name="quantity" class="form-control" 
+                       value="<?= htmlspecialchars($product['quantity']) ?>" min="0" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Precio Total del Insumo</label>
+                <input type="number" step="0.01" name="price" class="form-control" 
+                       value="<?= htmlspecialchars($product['price']) ?>" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Límite notificacion</label>
+                <input type="number" name="limit" class="form-control" 
+                       value="<?= htmlspecialchars($product['limit']) ?>" min="0" required>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Marca / Proveedor</label>
-                <input type="text" class="form-control" value="<?= htmlspecialchars($product['brand']) ?>" disabled>
+                <input type="text" class="form-control" 
+                       value="<?= htmlspecialchars($product['brand']) ?>" disabled>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Unidad de medida</label>
-                <input type="text" class="form-control" value="<?= htmlspecialchars($product['unit']) ?>" disabled>
+                <input type="text" class="form-control" 
+                       value="<?= htmlspecialchars($product['unit']) ?>" disabled>
             </div>
 
             <button type="submit" class="btn btn-primary">Guardar cambios</button>

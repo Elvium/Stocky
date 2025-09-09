@@ -48,6 +48,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
             <li><em>Medida:</em> unidad con la que trabajas tus productos (ml, gr, lt, kg, etc.).</li>
             <li><em>Cantidad de empaques:</em> número de unidades que trae el insumo (ejemplo: 6 bolsas de leche).</li>
             <li><em>Precio:</em> costo total de adquisición del insumo.</li>
+            <li><em>Límite de notificación:</em> cantidad mínima a partir de la cual el sistema mostrará un aviso de que el insumo está por acabarse.</li>
           </ul>
         </li>
       </ul>
@@ -55,9 +56,13 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
         ℹ️ <strong>Tip:</strong> para un mejor control, siempre registra los insumos en la unidad de medida más pequeña que utilices en tus productos.  
         Ejemplo: si usas leche en tazas, registra en mililitros.
       </div>
+      <div class="alert alert-warning mt-2">
+        ⚠️ <strong>Importante:</strong> cuando un insumo baje del <em>límite de notificación</em>, en la página de <strong>Inicio</strong> aparecerá una alerta con el nombre del insumo y la cantidad actual, para recordarte que necesitas reponerlo.
+      </div>
     </div>
   </div>
 </div>
+
 
 
 
@@ -129,7 +134,6 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 
 
 
-    <!-- Paso 4 -->
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading4">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
@@ -139,30 +143,43 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
       <p>
-        En esta sección podrás <strong>marcar los pedidos como entregados</strong>.  
-        Esto significa que el cliente ya recibió su pedido y la venta ha finalizado.  
-        <span class="text-danger">⚠️ Es importante cambiar el estado de los pedidos para llevar un control claro entre los que aún están pendientes y los que ya se completaron.</span>
+        En esta sección podrás <strong>cambiar el estado de los pedidos</strong> según su progreso.  
+        Esto permite llevar un control claro entre lo que está pendiente, lo que ya fue entregado y lo que está pagado.  
+        <span class="text-danger">⚠️ Es fundamental actualizar los estados en cada paso para mantener un registro confiable.</span>
       </p>
       <ul>
-        
         <li>Desde el menú <strong>Inicio</strong>, ingresa a la sección <strong>Estado de Pedidos</strong>.</li>
         <li>Se mostrará una lista con todos los pedidos realizados.</li>
-        <li>Identifica el pedido que deseas cerrar y presiona el botón <strong>"Marcar como Entregado"</strong>.</li>
-        <li>Automáticamente:
+        <li>En cada pedido verás un botón que te permitirá avanzar su estado:</li>
+        <ul>
+          <li><span class="badge bg-warning text-dark">Pendiente</span> → botón <strong>"Marcar como Entregado"</strong>.</li>
+          <li><span class="badge bg-danger text-dark">Entregado</span> → botón <strong>"Marcar como Pagado"</strong>.</li>
+          <li><span class="badge bg-success">Pagado</span> → se mostrará como finalizado, sin botón disponible.</li>
+        </ul>
+        <li>Automáticamente, al hacer clic en el botón:</li>
+        <ul>
+          <li>El estado del pedido avanzará al siguiente paso.</li>
+          <li>Podrás distinguir fácilmente entre los pedidos <strong>activos</strong>, <strong>entregados</strong> y <strong>pagados</strong>.</li>
+        </ul>
+        <li>
+          Además, en la parte superior encontrarás el <strong>filtro por estado</strong>, donde puedes elegir mostrar:
           <ul>
-            <li>El estado del pedido cambiará de <span class="badge bg-warning text-dark">Pendiente</span> a <span class="badge bg-success">Entregado</span>.</li>
-            <li>El pedido pasará a formar parte del historial de ventas cerradas.</li>
-            <li>Esto permitirá distinguir fácilmente entre pedidos aún activos y pedidos finalizados.</li>
+            <li><span class="badge bg-warning text-dark">Pendientes</span></li>
+            <li><span class="badge bg-danger text-dark">Entregados</span></li>
+            <li><span class="badge bg-success">Pagados</span></li>
+            <li>O bien <strong>Todos</strong> los pedidos.</li>
           </ul>
         </li>
       </ul>
       <p class="alert alert-info mt-2">
-        ℹ️ <strong>Tip:</strong> Actualiza siempre el estado de los pedidos al momento de la entrega.  
-        Así tendrás un registro exacto de las ventas completadas y evitarás confusiones en el seguimiento de pedidos.
+        ℹ️ <strong>Tip:</strong> Usa el filtro para revisar rápidamente qué pedidos están aún pendientes, cuáles ya entregaste y cuáles están completamente pagados.  
+        Mantén los estados actualizados para llevar un control exacto y evitar confusiones.
       </p>
     </div>
   </div>
 </div>
+
+
 
 
 

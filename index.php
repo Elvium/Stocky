@@ -90,8 +90,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <input type="password" name="password" class="form-control" required>
       </div>
       <button class="btn btn-primary w-100">Ingresar</button>
+      <!-- Versión del sistema -->
+      
     </form>
+    <p class="mt-4 mb-0 text-center" style="color:#2C3E50; font-weight:500;">V.1.02</p>
   </div>
+   <!-- Versión debajo de la tarjeta -->
+ 
 </div>
 
 <?php include 'footer.php'; ?>

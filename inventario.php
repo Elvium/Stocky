@@ -29,6 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     $price = floatval($_POST['price']);
     $quantity = intval($_POST['quantity']);
     $size = intval($_POST['size']); // usado para multiplicar cantidad
+    $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 0;
     $unit = trim($_POST['unit']);
 
     if ($size <= 0) $size = 1;
@@ -43,8 +44,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     if ($row = $result->fetch_assoc()) {
     // Ya existe → actualizar cantidad
     $new_quantity = $row['quantity'] + $total_quantity;
-    $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ? WHERE id = ?");
-    $update->bind_param("idi", $new_quantity, $price, $row['id']);
+    $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ?, `limit` = ? WHERE id = ?");
+$update->bind_param("idii", $new_quantity, $price, $limit, $row['id']);
     $update->execute();
 
     // 🔹 Registrar en inventory_logs (UPDATE)
@@ -64,9 +65,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
 } else {
     // No existe → insertar nuevo
     $insert = $conexion->prepare("INSERT INTO inventory 
-        (store_id, user_id, name, brand, quantity, price, unit) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $insert->bind_param("iissids", $store_id, $user_id, $name, $brand, $total_quantity, $price, $unit);
+    (store_id, user_id, name, brand, quantity, price, unit, `limit`) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+$insert->bind_param("iissidsi", $store_id, $user_id, $name, $brand, $total_quantity, $price, $unit, $limit);
+
     $insert->execute();
 
     $new_id = $conexion->insert_id; // ID del nuevo insumo
@@ -89,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
 }
 
 // --- Obtener insumos existentes de la tienda ---
-$products = $conexion->prepare("SELECT id, name, brand, quantity, unit FROM inventory WHERE store_id = ? AND activo = 1");
+$products = $conexion->prepare("SELECT * FROM inventory WHERE store_id = ? AND activo = 1");
 $products->bind_param("i", $store_id);
 $products->execute();
 $products_result = $products->get_result();
@@ -163,7 +165,7 @@ $brands_result = $brands->get_result();
                 <label class="form-label">Tamaño del insumo unitario</label>
                 <input type="number" name="quantity" class="form-control" required>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-2">
                 <label class="form-label">Medida</label>
                 <select name="unit" class="form-select no-uppercase"  required>
                     <option value="ml">ml</option>
@@ -179,10 +181,17 @@ $brands_result = $brands->get_result();
                 <input type="number" name="size" value="1" class="form-control">
             </div>
             
-            <div class="col-md-3">
+ <div class="col-md-2">
+    <label class="form-label">Límite recompra</label>
+    <input type="number" name="limit" class="form-control" value="0" min="0" required>
+</div>
+
+            <div class="col-md-2">
                 <label class="form-label">Precio Total del Insumo</label>
                 <input type="number" step="0.01" name="price" class="form-control" required>
             </div>
+
+           
         </div>
 
         <button type="submit" class="btn btn-primary">Guardar</button>
@@ -198,6 +207,7 @@ $brands_result = $brands->get_result();
                 <th>Marca/Proveedor</th>
                 <th>Cantidad</th>
                 <th>Medida</th>
+                <th>Límite</th>
                 <th>Acción</th>
             </tr>
         </thead>
@@ -208,6 +218,8 @@ $brands_result = $brands->get_result();
                 <td><?= htmlspecialchars($p['brand']) ?></td>
                 <td><?= number_format($p['quantity'], 0, ',', '.') ?></td>
                 <td><?= htmlspecialchars($p['unit']) ?></td>
+                <td><?= htmlspecialchars($p['limit']) ?></td>
+
                 <td>
                     <a href="editar_inventario.php?id=<?= $p['id'] ?>" 
    class="btn btn-sm btn-warning me-2">Editar</a>
