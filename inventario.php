@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     $price = floatval($_POST['price']);
     $quantity = intval($_POST['quantity']);
     $size = intval($_POST['size']); // usado para multiplicar cantidad
-    $limit = isset($_POST['limit']) ? intval($_POST['limit']) : 0;
+    $limit = isset($_POST['limite']) ? intval($_POST['limite']) : 0;
     $unit = trim($_POST['unit']);
 
     if ($size <= 0) $size = 1;
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     if ($row = $result->fetch_assoc()) {
     // Ya existe → actualizar cantidad
     $new_quantity = $row['quantity'] + $total_quantity;
-    $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ?, `limit` = ? WHERE id = ?");
+    $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ?, limite = ? WHERE id = ?");
 $update->bind_param("idii", $new_quantity, $price, $limit, $row['id']);
     $update->execute();
 
@@ -65,7 +65,7 @@ $update->bind_param("idii", $new_quantity, $price, $limit, $row['id']);
 } else {
     // No existe → insertar nuevo
     $insert = $conexion->prepare("INSERT INTO inventory 
-    (store_id, user_id, name, brand, quantity, price, unit, `limit`) 
+    (store_id, user_id, name, brand, quantity, price, unit, limite) 
     VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 $insert->bind_param("iissidsi", $store_id, $user_id, $name, $brand, $total_quantity, $price, $unit, $limit);
 
@@ -183,7 +183,7 @@ $brands_result = $brands->get_result();
             
  <div class="col-md-2">
     <label class="form-label">Límite recompra</label>
-    <input type="number" name="limit" class="form-control" value="0" min="0" required>
+    <input type="number" name="limite" class="form-control" value="0" min="0" required>
 </div>
 
             <div class="col-md-2">
@@ -218,7 +218,7 @@ $brands_result = $brands->get_result();
                 <td><?= htmlspecialchars($p['brand']) ?></td>
                 <td><?= number_format($p['quantity'], 0, ',', '.') ?></td>
                 <td><?= htmlspecialchars($p['unit']) ?></td>
-                <td><?= htmlspecialchars($p['limit']) ?></td>
+                <td><?= htmlspecialchars($p['limite']) ?></td>
 
                 <td>
                     <a href="editar_inventario.php?id=<?= $p['id'] ?>" 
