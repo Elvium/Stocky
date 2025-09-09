@@ -146,7 +146,7 @@ if ($role === 'user') {
 $insumos_bajos = $conexion->query("
     SELECT *
     FROM inventory
-    WHERE user_id = $user_id AND quantity < limit
+    WHERE user_id = $user_id AND quantity < < 'limit'
 ");
 
     // Consultas
