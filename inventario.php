@@ -29,11 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     $price = floatval($_POST['price']);
     $quantity = intval($_POST['quantity']);
     $size = intval($_POST['size']); // usado para multiplicar cantidad
-<<<<<<< HEAD
     $limite = isset($_POST['limite']) ? intval($_POST['limite']) : 0;
-=======
-    $limit = isset($_POST['limite']) ? intval($_POST['limite']) : 0;
->>>>>>> d1a8de31159a26366961011fb2bf7b828de5fe5b
     $unit = trim($_POST['unit']);
 
     if ($size <= 0) $size = 1;
@@ -49,11 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     // Ya existe → actualizar cantidad
     $new_quantity = $row['quantity'] + $total_quantity;
     $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ?, limite = ? WHERE id = ?");
-<<<<<<< HEAD
 $update->bind_param("idii", $new_quantity, $price, $limite, $row['id']);
-=======
-$update->bind_param("idii", $new_quantity, $price, $limit, $row['id']);
->>>>>>> d1a8de31159a26366961011fb2bf7b828de5fe5b
     $update->execute();
 
     // 🔹 Registrar en inventory_logs (UPDATE)
