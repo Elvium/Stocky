@@ -16,7 +16,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = intval($_GET['id']);
-$stmt = $conexion->prepare("SELECT id, name, brand, quantity, unit, price, `limit` 
+$stmt = $conexion->prepare("SELECT id, name, brand, quantity, unit, price, limite
                              FROM inventory 
                              WHERE id = ? AND store_id = ?");
 $stmt->bind_param("ii", $id, $store_id);
@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $new_name = trim($_POST['name']);
     $new_quantity = intval($_POST['quantity']);
     $new_price = floatval($_POST['price']);
-    $new_limit = intval($_POST['limit']);
+    $new_limit = intval($_POST['limite']);
 
     if ($new_quantity < 0) $new_quantity = 0;
     if ($new_limit < 0) $new_limit = 0;
@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     // Ejecutar el UPDATE
     $update = $conexion->prepare("UPDATE inventory 
-                                  SET name = ?, quantity = ?, price = ?, `limit` = ? 
+                                  SET name = ?, quantity = ?, price = ?, limite = ? 
                                   WHERE id = ? AND store_id = ?");
     $update->bind_param("sdiisi", $new_name, $new_quantity, $new_price, $new_limit, $id, $store_id);
     $update->execute();
@@ -92,8 +92,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <div class="mb-3">
                 <label class="form-label">Límite notificacion</label>
-                <input type="number" name="limit" class="form-control" 
-                       value="<?= htmlspecialchars($product['limit']) ?>" min="0" required>
+                <input type="number" name="limite" class="form-control" 
+                       value="<?= htmlspecialchars($product['limite']) ?>" min="0" required>
             </div>
 
             <div class="mb-3">

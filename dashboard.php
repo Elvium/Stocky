@@ -108,7 +108,7 @@ if (isset($_POST['nuevo_seller'])) {
 
 
 // ================== FUNCIONALIDAD USUARIOS TIENDA ==================
-if ($role === 'user') {
+if ($role === 'user' || $role === 'seller') {
     // Nuevo material
     if (isset($_POST['nuevo_material'])) {
         $nombre = $_POST['nombre'];
@@ -144,9 +144,9 @@ if ($role === 'user') {
     }
 // Aviso de insumos bajos en stock
 $insumos_bajos = $conexion->query("
-    SELECT name, quantity, unit, `limit`
+    SELECT name, quantity, unit, limite
     FROM inventory
-    WHERE user_id = $user_id AND quantity < `limit`
+    WHERE store_id = $store_id AND quantity < limite
 ");
 
     // Consultas
@@ -178,7 +178,7 @@ $insumos_bajos = $conexion->query("
   <h3 class="mb-4">Bienvenido, <?php echo ($role === 'super') ? "Administrador" : "Tienda $username"; ?></h3>
 
 <!-- ================== AVISO DE INSUMOS INSUFICIENTES ================== -->
-  <?php if ( $insumos_bajos && $insumos_bajos->num_rows > 0): ?>
+ <?php if (($role === 'user' || $role === 'seller') && $insumos_bajos && $insumos_bajos->num_rows > 0): ?>
   <div class="alert alert-info">
     <strong>⚠️ Atención:</strong> Los siguientes insumos están por agotarse:
     <ul class="mb-0">
@@ -186,7 +186,7 @@ $insumos_bajos = $conexion->query("
         <li>
           <?php echo $i['name']; ?> → 
           <?php echo $i['quantity'] . " " . $i['unit']; ?> 
-          (límite mínimo: <?php echo $i['limit']; ?>)
+          (límite mínimo: <?php echo $i['limite']; ?>)
         </li>
       <?php endwhile; ?>
     </ul>
