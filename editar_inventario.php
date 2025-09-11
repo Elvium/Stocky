@@ -16,11 +16,7 @@ if (!isset($_GET['id'])) {
 }
 
 $id = intval($_GET['id']);
-<<<<<<< HEAD
 $stmt = $conexion->prepare("SELECT id, name, brand, quantity, unit, price, limite
-=======
-$stmt = $conexion->prepare("SELECT id, name, brand, quantity, unit, price, limite 
->>>>>>> d1a8de31159a26366961011fb2bf7b828de5fe5b
                              FROM inventory 
                              WHERE id = ? AND store_id = ?");
 $stmt->bind_param("ii", $id, $store_id);
