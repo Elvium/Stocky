@@ -144,15 +144,9 @@ if ($role === 'user' || $role === 'seller') {
     }
 // Aviso de insumos bajos en stock
 $insumos_bajos = $conexion->query("
-<<<<<<< HEAD
     SELECT name, quantity, unit, limite
     FROM inventory
     WHERE store_id = $store_id AND quantity < limite
-=======
-    SELECT *
-    FROM inventory
-    WHERE user_id = $user_id AND quantity < limite
->>>>>>> d1a8de31159a26366961011fb2bf7b828de5fe5b
 ");
 
     // Consultas
