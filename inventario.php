@@ -91,7 +91,7 @@ $insert->bind_param("iissidsi", $store_id, $user_id, $name, $brand, $total_quant
 }
 
 // --- Obtener insumos existentes de la tienda ---
-$products = $conexion->prepare("SELECT * FROM inventory WHERE store_id = ? AND activo = 1");
+$products = $conexion->prepare("SELECT * FROM inventory WHERE store_id = ? AND activo = 1 ORDER BY name ASC");
 $products->bind_param("i", $store_id);
 $products->execute();
 $products_result = $products->get_result();
