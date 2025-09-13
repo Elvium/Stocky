@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
     $delete_id = intval($_POST['delete_id']);
 
     // En lugar de borrar, desactivar
-    $del_item = $conexion->prepare("UPDATE inventory SET activo = 0 WHERE id = ? AND store_id = ?");
+    $del_item = $conexion->prepare("UPDATE inventory SET activo = 0, quantity = 0, price = 0 WHERE id = ? AND store_id = ?");
     $del_item->bind_param("ii", $delete_id, $store_id);
     $del_item->execute();
 
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
     if ($row = $result->fetch_assoc()) {
     // Ya existe → actualizar cantidad
     $new_quantity = $row['quantity'] + $total_quantity;
-    $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ?, limite = ? WHERE id = ?");
+    $update = $conexion->prepare("UPDATE inventory SET quantity = ?, price = ?, limite = ?, activo = 1 WHERE id = ?");
 $update->bind_param("idii", $new_quantity, $price, $limite, $row['id']);
     $update->execute();
 

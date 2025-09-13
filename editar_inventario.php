@@ -48,6 +48,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $update->bind_param("sdiisi", $new_name, $new_quantity, $new_price, $new_limit, $id, $store_id);
     $update->execute();
 
+    $updateLog = $conexion->prepare("
+    UPDATE inventory_logs 
+    SET price = ? 
+    WHERE inventory_id = ? AND store_id = ? 
+    ORDER BY id DESC 
+    LIMIT 1
+");
+$updateLog->bind_param("dii", $new_price, $id, $store_id);
+$updateLog->execute();
+
     // Limpiar variable
     $conexion->query("SET @SKIP_INVENTORY_LOG = NULL");
 

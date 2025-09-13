@@ -59,6 +59,14 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
       <div class="alert alert-warning mt-2">
         ⚠️ <strong>Importante:</strong> cuando un insumo baje del <em>límite de notificación</em>, en la página de <strong>Inicio</strong> aparecerá una alerta con el nombre del insumo y la cantidad actual, para recordarte que necesitas reponerlo.
       </div>
+      <div class="alert alert-primary mt-2">
+        ✏️ <strong>Editar:</strong> utiliza este botón cuando hayas cometido un error al digitar la información de un insumo (por ejemplo, precio o cantidad).  
+        De esta forma, corriges el registro sin afectar la trazabilidad de tus finanzas.
+      </div>
+      <div class="alert alert-danger mt-2">
+        🗑️ <strong>Eliminar:</strong> usa este botón únicamente cuando un insumo se haya perdido o dañado, pero aún así representó un costo para tu negocio.  
+        Así, los reportes financieros reflejarán claramente la pérdida y mantendrán la coherencia de tu inventario.
+      </div>
     </div>
   </div>
 </div>
