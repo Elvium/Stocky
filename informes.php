@@ -174,42 +174,43 @@ WHERE store_id = ? AND action = 'insert' AND DATE(changed_at) BETWEEN ? AND ?
     $stmt->execute();
     $gastos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-    // --- Preparar PDF ---
-    $dompdf = new Dompdf();
-    $html = '
-    <style>
-        body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
-        h1 { color: #2c7a7b; text-align: center; }
-        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
-        th { background-color: #2c7a7b; color: white; }
-        .total { font-weight: bold; text-align: right; }
-        .footer { margin-top: 30px; text-align: center; font-size: 11px; color: #777; }
-    </style>
+   // --- Preparar PDF ---
+$dompdf = new Dompdf();
+$html = '
+<style>
+    body { font-family: DejaVu Sans, sans-serif; font-size: 12px; }
+    h1 { color: #2c7a7b; text-align: center; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ccc; padding: 6px; text-align: center; }
+    th { background-color: #2c7a7b; color: white; }
+    .total { font-weight: bold; text-align: right; }
+    .footer { margin-top: 30px; text-align: center; font-size: 11px; color: #777; }
+</style>
 
-    <h1>Informe General</h1>
-    <p style="text-align:center;">Periodo: ' . $fecha_inicio . ' a ' . $fecha_fin . '</p>
+<h1>Informe General</h1>
+<p style="text-align:center;">Periodo: ' . $fecha_inicio . ' a ' . $fecha_fin . '</p>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Detalle</th>
-                <th>Ingresos</th>
-                <th>Gastos</th>
-            </tr>
-        </thead>
-        <tbody>';
+<table>
+    <thead>
+        <tr>
+            <th>Fecha</th>
+            <th>Detalle</th>
+            <th>Ingresos</th>
+            <th>Gastos</th>
+        </tr>
+    </thead>
+    <tbody>';
 
     $total_ingresos = 0;
     $total_gastos = 0;
 
-  // Unir ingresos y gastos en un solo arreglo
+ // Unir ingresos y gastos en un solo arreglo
 $movimientos = [];
 
 foreach ($ingresos as $ing) {
     $movimientos[] = [
         'fecha' => $ing['fecha'],
-        'detalle' => 'VENTA - ' . $ing['fecha'],
+        'detalle' => 'VENTA',
         'ingreso' => $ing['ingreso'],
         'gasto' => 0
     ];
@@ -219,14 +220,14 @@ foreach ($ingresos as $ing) {
 foreach ($gastos as $gas) {
     $movimientos[] = [
         'fecha' => $gas['fecha'],
-        'detalle' => 'INSUMO - ' . $gas['name'] . ' (' . $gas['fecha'] . ')',
+        'detalle' => 'INSUMO - ' . $gas['name'],
         'ingreso' => 0,
         'gasto' => $gas['gasto']
     ];
     $total_gastos += $gas['gasto'];
 }
 
-// Ordenar cronológicamente por fecha
+// Ordenar cronológicamente
 usort($movimientos, function($a, $b) {
     return strcmp($a['fecha'], $b['fecha']);
 });
@@ -234,29 +235,28 @@ usort($movimientos, function($a, $b) {
 // Pintar filas en orden
 foreach ($movimientos as $mov) {
     $html .= '<tr>
+        <td>' . htmlspecialchars($mov['fecha']) . '</td>
         <td>' . htmlspecialchars($mov['detalle']) . '</td>
         <td>' . ($mov['ingreso'] > 0 ? '$' . number_format($mov['ingreso'], 2) : '-') . '</td>
         <td>' . ($mov['gasto'] > 0 ? '$' . number_format($mov['gasto'], 2) : '-') . '</td>
     </tr>';
 }
 
+$html .= '
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="2" class="total">TOTAL:</td>
+            <td class="total">$' . number_format($total_ingresos, 2) . '</td>
+            <td class="total">$' . number_format($total_gastos, 2) . '</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="total">BALANCE: $' . number_format($total_ingresos - $total_gastos, 2) . '</td>
+        </tr>
+    </tfoot>
+</table>
 
-
-    $html .= '
-        </tbody>
-        <tfoot>
-            <tr>
-                <td class="total">TOTAL:</td>
-                <td class="total">$' . number_format($total_ingresos, 2) . '</td>
-                <td class="total">$' . number_format($total_gastos, 2) . '</td>
-            </tr>
-            <tr>
-                <td colspan="3" class="total">BALANCE: $' . number_format($total_ingresos - $total_gastos, 2) . '</td>
-            </tr>
-        </tfoot>
-    </table>
-
-    <div class="footer">Generado por Stocky</div>';
+<div class="footer">Generado por Stocky</div>';
 
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');
