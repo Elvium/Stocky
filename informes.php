@@ -163,16 +163,38 @@ if (isset($_POST['fecha_inicio'], $_POST['fecha_fin'])) {
     $stmt->execute();
     $ingresos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-    // Gastos: cada insumo insertado
-    $stmt = $conexion->prepare("
-        SELECT name, price as gasto, DATE(changed_at) as fecha
-FROM inventory_logs
-WHERE store_id = ? AND action = 'insert' AND DATE(changed_at) BETWEEN ? AND ?
+    // Gastos e insumos: insert, update y gasto
+$stmt = $conexion->prepare("
+    SELECT name, price as gasto, action, DATE(changed_at) as fecha
+    FROM inventory_logs
+    WHERE store_id = ?
+      AND action IN ('insert', 'update', 'gasto')
+      AND DATE(changed_at) BETWEEN ? AND ?
+");
+$stmt->bind_param("iss", $store_id, $fecha_inicio, $fecha_fin);
+$stmt->execute();
+$gastos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
 
-    ");
-    $stmt->bind_param("iss", $store_id, $fecha_inicio, $fecha_fin);
-    $stmt->execute();
-    $gastos = $stmt->get_result()->fetch_all(MYSQLI_ASSOC);
+$total_ingresos = 0;
+$total_gastos = 0;
+$movimientos = [];
+
+
+// Procesar insumos y gastos
+foreach ($gastos as $gas) {
+    $detalle = ($gas['action'] === 'gasto')
+        ? 'GASTO - ' . $gas['name']
+        : 'INSUMO - ' . $gas['name'];
+
+    $movimientos[] = [
+        'fecha' => $gas['fecha'],
+        'detalle' => $detalle,
+        'ingreso' => 0,
+        'gasto' => $gas['gasto']
+    ];
+    $total_gastos += $gas['gasto'];
+}
+
 
    // --- Preparar PDF ---
 $dompdf = new Dompdf();
@@ -201,11 +223,10 @@ $html = '
     </thead>
     <tbody>';
 
-    $total_ingresos = 0;
-    $total_gastos = 0;
+
 
  // Unir ingresos y gastos en un solo arreglo
-$movimientos = [];
+
 
 foreach ($ingresos as $ing) {
     $movimientos[] = [
@@ -217,15 +238,7 @@ foreach ($ingresos as $ing) {
     $total_ingresos += $ing['ingreso'];
 }
 
-foreach ($gastos as $gas) {
-    $movimientos[] = [
-        'fecha' => $gas['fecha'],
-        'detalle' => 'INSUMO - ' . $gas['name'],
-        'ingreso' => 0,
-        'gasto' => $gas['gasto']
-    ];
-    $total_gastos += $gas['gasto'];
-}
+
 
 // Ordenar cronológicamente
 usort($movimientos, function($a, $b) {

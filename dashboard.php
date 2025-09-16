@@ -292,6 +292,22 @@ $insumos_bajos = $conexion->query("
       </div>
     </div>
 
+    <!-- GASTOS -->
+<div class="col-md-6 col-lg-3">
+  <div class="card text-center shadow-sm h-100">
+    <div class="card-body">
+      <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">💸</div>
+      <h5 class="card-title">Gastos</h5>
+      <p class="card-text">Registra los gastos diarios como domicilios o pago a empleados.</p>
+      <a href="gastos.php" class="btn btn-primary">Ir a Gastos</a>
+    </div>
+  </div>
+</div>
+
+
+
+
+
     <!-- PRODUCTOS -->
     <div class="col-md-6 col-lg-3">
       <div class="card text-center shadow-sm h-100">

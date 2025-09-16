@@ -346,3 +346,8 @@ button.btn {
   white-space: nowrap;
   margin-right: 10px;
 }
+
+.table th {
+  text-align: center;
+  vertical-align: middle; /* Opcional: alinea verticalmente también */
+}
