@@ -105,6 +105,41 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 </div>
 
 
+<!-- Paso 2.1 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="heading2_1">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2_1">
+      💰 Registra Gastos diarios
+    </button>
+  </h2>
+  <div id="collapse2_1" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
+    <div class="accordion-body">
+      <p>
+        En esta sección podrás registrar <strong>gastos adicionales</strong> (como servicios, domiciliarios, pagos a empleados o compras menores) 
+        que requiere tu negocio.  
+        Esto ayuda a que los informes reflejen no solo los ingresos por ventas y el costo de los insumos, sino también los gastos diarios de tu negocio.
+      </p>
+      <ul>
+        <li>Desde el menú <strong>Inicio</strong>, accede a la sección <strong>Gastos</strong>.</li>
+        <li>Selecciona el concepto del gasto (si no tienes ningun concepto de gasto puedes crearlo en el mismo formulario y se guardara):
+          <ul>
+            <li><span class="badge bg-danger">GASTO</span> → cuando registras un gasto general (ejemplo: servicios públicos, pago de personal, etc.).</li>
+          </ul>
+        </li>
+        <li>Completa el campo de <strong>costo</strong> y oprime <strong>Registrar Gasto</strong>.</li>
+      </ul>
+      <div class="alert alert-warning mt-2">
+        ⚠️ <strong>Importante:</strong> Registrar correctamente los gastos asegura que los informes contables reflejen la <em>realidad financiera</em> de tu negocio.
+      </div>
+      <div class="alert alert-info mt-2">
+        ℹ️ <strong>Tip:</strong> Usa esta sección cada vez que hagas compras adicionales o pagos fijos para que tu balance sea más exacto. Tambien podras visualizar una tabla con los ultimos gastos registrados
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
 <!-- Paso 3 -->
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading3">
@@ -145,47 +180,36 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading4">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
-      4️⃣ Cambia el estado de los pedidos.
+      4️⃣ Controla los estados de los pedidos
     </button>
   </h2>
   <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
       <p>
-        En esta sección podrás <strong>cambiar el estado de los pedidos</strong> según su progreso.  
-        Esto permite llevar un control claro entre lo que está pendiente, lo que ya fue entregado y lo que está pagado.  
-        <span class="text-danger">⚠️ Es fundamental actualizar los estados en cada paso para mantener un registro confiable.</span>
+        En la sección de <strong>Estado de Pedidos</strong> puedes gestionar el estado de los pedidos recientes en dos aspectos:<span class="badge bg-warning text-dark">Entregado</span> y <span class="badge bg-warning text-dark">Pagodo</span>, de manera independiente.. 
+    
       </p>
+     
+
       <ul>
         <li>Desde el menú <strong>Inicio</strong>, ingresa a la sección <strong>Estado de Pedidos</strong>.</li>
-        <li>Se mostrará una lista con todos los pedidos realizados.</li>
-        <li>En cada pedido verás un botón que te permitirá avanzar su estado:</li>
-        <ul>
-          <li><span class="badge bg-warning text-dark">Pendiente</span> → botón <strong>"Marcar como Entregado"</strong>.</li>
-          <li><span class="badge bg-danger text-dark">Entregado</span> → botón <strong>"Marcar como Pagado"</strong>.</li>
-          <li><span class="badge bg-success">Pagado</span> → se mostrará como finalizado, sin botón disponible.</li>
-        </ul>
-        <li>Automáticamente, al hacer clic en el botón:</li>
-        <ul>
-          <li>El estado del pedido avanzará al siguiente paso.</li>
-          <li>Podrás distinguir fácilmente entre los pedidos <strong>activos</strong>, <strong>entregados</strong> y <strong>pagados</strong>.</li>
-        </ul>
-        <li>
-          Además, en la parte superior encontrarás el <strong>filtro por estado</strong>, donde puedes elegir mostrar:
-          <ul>
-            <li><span class="badge bg-warning text-dark">Pendientes</span></li>
-            <li><span class="badge bg-danger text-dark">Entregados</span></li>
-            <li><span class="badge bg-success">Pagados</span></li>
-            <li>O bien <strong>Todos</strong> los pedidos.</li>
-          </ul>
-        </li>
+        <li>Cambia los estados del pedido haicendo uso de los botones en la columna de accion asi:.</li>
+        <li><strong>NO ENTREGADO</strong> → Usar botón <em>Entregado</em> para cambiar el estado. <strong>Se entrego el pedido</strong></li>
+        <li><strong>NO PAGADO</strong> → Usar botón <em>Pagado</em> para cambiar el estado. <strong>Se cobro el pedido</strong></li>
+        <li>Cuando cambia a <span class="badge bg-success">ENTREGADO</span> o <span class="badge bg-success">PAGADO</span>, el botón se desactiva.</li>
       </ul>
+ <p class="alert alert-primary mt-3">
+        📌 <strong>Novedad:</strong> Ahora cada pedido muestra los <em>productos incluidos</em>
+      </p>
       <p class="alert alert-info mt-2">
-        ℹ️ <strong>Tip:</strong> Usa el filtro para revisar rápidamente qué pedidos están aún pendientes, cuáles ya entregaste y cuáles están completamente pagados.  
-        Mantén los estados actualizados para llevar un control exacto y evitar confusiones.
+        ℹ️ <strong>Tip:</strong> Usa el filtro superior para ver únicamente pedidos <em>Pendientes</em>, <em>Entregados</em>, <em>Pagados</em> o <em>Todos</em>.  
+        Así tendrás una vista rápida de qué pedidos requieren acción inmediata.
       </p>
     </div>
   </div>
 </div>
+
+
 
 
 
@@ -212,6 +236,32 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
       </ul>
       <div class="alert alert-info mt-2">
         ℹ️ <strong>Tip:</strong> Los reportes diarios te permiten llevar la caja del día, mientras que los reportes mensuales facilitan la contabilidad general y el análisis de tu negocio.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Paso 6 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="heading6">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+      📖 Consulta Recetas y Composición de Productos
+    </button>
+  </h2>
+  <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
+    <div class="accordion-body">
+      <p>
+        En la sección de <strong>Recetas</strong> puedes consultar en detalle cómo está compuesto cada producto de tu menú.  
+        Allí verás qué insumos utiliza, en qué cantidades y cómo impacta en el costo total de producción.
+      </p>
+      <ul>
+        <li>Desde el menú <strong>Inicio</strong>, accede a la sección <strong>Recetas</strong>.</li>
+        <li>Selecciona un producto para visualizar su receta.</li>
+        <li>La receta mostrará los insumos exactos usados y sus cantidades.</li>
+        <li>Esto permite analizar <strong>costos de producción</strong> y garantizar consistencia en la preparación.</li>
+      </ul>
+      <div class="alert alert-info mt-2">
+        ℹ️ <strong>Tip:</strong> Usa esta sección para capacitar a tu equipo en la preparación de los productos y asegurar que todos utilicen las mismas cantidades de insumos.
       </div>
     </div>
   </div>
