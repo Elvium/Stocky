@@ -1,7 +1,7 @@
 <?php
 session_start();
 require 'verificar_sesion.php'; 
-require_once "conexion.php";
+
 
 $user_id = $_SESSION['user_id'];
 $store_id = $_SESSION['store_id'];

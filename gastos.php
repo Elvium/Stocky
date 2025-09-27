@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'conexion.php';
+
 require 'verificar_sesion.php';
 
 if ($_SESSION['role'] !== 'user') {

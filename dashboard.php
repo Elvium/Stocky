@@ -1,6 +1,6 @@
 <?php
 session_start();
-require 'conexion.php';
+
 require 'verificar_sesion.php';
 // Verificar login y datos de sesión obligatorios
 if (

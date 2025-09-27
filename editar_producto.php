@@ -5,7 +5,7 @@ if (!isset($_SESSION['user_id']) || !isset($_SESSION['store_id'])) {
     exit();
 }
 
-require_once "conexion.php";
+require 'verificar_sesion.php';
 $store_id = $_SESSION['store_id'];
 
 // --- Obtener ID del producto ---
