@@ -270,3 +270,6 @@ function toggleBrandInput(select) {
 
 </body>
 </html>
+<?php
+require 'toomanyconexion.php'; 
+?>

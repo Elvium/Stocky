@@ -90,6 +90,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
     header("Location: pedidos.php?success=1");
     exit;
 }
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -182,6 +185,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 <?php include 'footer.php'; ?>
 
 <script>
+document.addEventListener('DOMContentLoaded', function () {
+
 // --- Datos de insumos ---
 const productMaterials = {};
 <?php
@@ -311,7 +316,8 @@ function actualizarTablaPedido(){
 document.querySelectorAll('.agregar-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
         const tr = btn.closest('tr');
-        const id = tr.dataset.productId;
+        const id = parseInt(tr.dataset.productId); // 🔹 Forzar a número
+
         const name = tr.cells[0].textContent;
         const price = parseFloat(tr.dataset.price);
 
@@ -342,6 +348,8 @@ document.getElementById('finalizarPedido').addEventListener('click', ()=>{
     document.getElementById('clientInput').value  = clientName;
     document.getElementById('pedidoForm').submit();
 });
+
+});
 </script>
 
 <form id="pedidoForm" method="POST" style="display:none;">
@@ -351,3 +359,6 @@ document.getElementById('finalizarPedido').addEventListener('click', ()=>{
 </form>
 </body>
 </html>
+<?php
+require 'toomanyconexion.php'; 
+?>

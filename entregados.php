@@ -222,3 +222,6 @@ $result = $stmt->get_result();
 <?php include 'footer.php'; ?>
 </body>
 </html>
+<?php
+require 'toomanyconexion.php'; 
+?>
