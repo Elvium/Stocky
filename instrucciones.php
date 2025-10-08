@@ -12,6 +12,8 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   <title>Instrucciones - Stocky</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="shortcut icon" href="img/favicon.png">
 </head>
 <body>
 <?php include 'navbar.php'; ?>

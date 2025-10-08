@@ -76,6 +76,8 @@ $update->execute();
     <title>Editar Producto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="shortcut icon" href="img/favicon.png">
 </head>
 <body>
 <?php include 'navbar.php'; ?>
