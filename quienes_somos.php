@@ -10,11 +10,34 @@
   <link rel="shortcut icon" href="img/favicon.png">
  <style>
     .hero {
-      background: linear-gradient(135deg, #00394f, #00a6a6);
-      color: white;
-      text-align: center;
-      padding: 80px 20px ;
-    }
+  background: linear-gradient(135deg, #00394f, #00a6a6);
+  color: white;
+  text-align: center;
+  padding: 100px 20px 80px;
+  position: relative;
+}
+
+.hero h1 {
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+.btn-light {
+  border-radius: 30px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-light:hover {
+  background-color: #f8f9fa;
+  transform: scale(1.05);
+}
+
     .section {
       padding: 0px 20px 60px;
     }
@@ -30,16 +53,16 @@
   </style>
 </head>
 <body>
-<div class="container mt-4">
-  <a href="index.php" class="btn btn-secondary">
+
+
+  <div class="hero position-relative">
+  <a href="index.php" class="btn btn-light position-absolute top-0 start-0 m-3 shadow-sm">
     ⬅ Volver al inicio
   </a>
+  <h1>Sobre Nosotros</h1>
+  <p>Conoce la historia y el propósito detrás de <strong>Stocky</strong>.</p>
 </div>
 
-  <div class="hero">
-    <h1>Sobre Nosotros</h1>
-    <p>Conoce la historia y el propósito detrás de <strong>Stocky</strong>.</p>
-  </div>
 
   <main class="container section">
     <div class="text-center mb-5">
