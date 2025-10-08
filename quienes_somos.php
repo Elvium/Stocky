@@ -58,14 +58,14 @@
 
     <div class="row align-items-center flex-md-row-reverse">
       <div class="col-md-6">
-        <h2>Visión</h2>
+        
         <p>
           Aspiramos a convertirnos en la herramienta digital más confiable para la gestión integral de negocios locales,
           impulsando la transformación digital de los emprendedores y fomentando el crecimiento económico de nuestra región.
         </p>
       </div>
       <div class="col-md-6 text-center">
-        <img src="img/vision.svg" alt="Visión" class="img-fluid" style="max-width: 350px;">
+        <img src="img/vision.png" alt="Visión" class="img-fluid" style="max-width: 350px;">
       </div>
     </div>
 
