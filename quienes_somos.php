@@ -1,4 +1,3 @@
-<?php include 'navbar.php'; ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,7 +7,27 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <link rel="icon" type="image/png" href="favicon.png">
- 
+  <link rel="shortcut icon" href="img/favicon.png">
+ <style>
+    .hero {
+      background: linear-gradient(135deg, #00394f, #00a6a6);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .section {
+      padding: 60px 20px;
+    }
+    .section h2 {
+      color: #00394f;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+    .section p {
+      font-size: 1.1rem;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 
@@ -19,13 +38,13 @@
 
   <main class="container section">
     <div class="text-center mb-5">
-      <img src="logo.png" alt="Logo Stocky" width="120" class="mb-3">
+      <img src="logo.PNG" alt="Logo Stocky" width="120" class="mb-3">
       <p class="lead">Somos un equipo apasionado por hacer que la gestión de negocios sea más simple, accesible y eficiente.</p>
     </div>
 
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
-        <h2>Misión</h2>
+        
         <p>
           Nuestra misión es ayudar a pequeños y medianos emprendedores a tener el control total de sus negocios de manera práctica,
           moderna y desde cualquier lugar. Con <strong>Stocky</strong>, puedes administrar tus ventas, inventario y finanzas sin
@@ -33,7 +52,7 @@
         </p>
       </div>
       <div class="col-md-6 text-center">
-        <img src="img/mision.svg" alt="Misión" class="img-fluid" style="max-width: 350px;">
+        <img src="img/mision.png" alt="Misión" class="img-fluid" style="max-width: 350px;">
       </div>
     </div>
 
