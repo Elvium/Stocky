@@ -13,7 +13,7 @@
       background: linear-gradient(135deg, #00394f, #00a6a6);
       color: white;
       text-align: center;
-      padding: 80px 20px;
+      padding: 0px 20px 80px;
     }
     .section {
       padding: 60px 20px;
@@ -38,8 +38,13 @@
 
   <main class="container section">
     <div class="text-center mb-5">
-      <img src="logo.PNG" alt="Logo Stocky" width="120" class="mb-3">
+      <img src="Logo2.png" alt="Stocky Logo" width="120" class="mb-3">
       <p class="lead">Somos un equipo apasionado por hacer que la gestión de negocios sea más simple, accesible y eficiente.</p>
+      <div class="text-center my-4">
+  <a href="index.php" class="btn btn-outline-primary btn-lg">
+    ⬅ Volver al inicio
+  </a>
+</div>
     </div>
 
     <div class="row align-items-center mb-5">
