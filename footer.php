@@ -4,9 +4,7 @@
     <p class="mb-1">© 2025 Stocky. Todos los derechos reservados.</p>
     <small class="d-block">Desarrollado con 💻 por tu equipo de confianza</small>
     <small class="d-block">
-      <a href="acercade.php" class="text-white text-decoration-underline">
-        Acerca de Nosotros
-      </a>
+     
     </small>
   </div>
 </footer>

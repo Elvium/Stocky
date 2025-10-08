@@ -38,9 +38,7 @@
   transform: scale(1.05);
 }
 
-    .section {
-      padding: 0px 20px 60px;
-    }
+    
     .section h2 {
       color: #00394f;
       font-weight: 700;
