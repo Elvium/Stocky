@@ -13,10 +13,10 @@
       background: linear-gradient(135deg, #00394f, #00a6a6);
       color: white;
       text-align: center;
-      padding: 0px 20px 80px;
+      padding: 80px 20px ;
     }
     .section {
-      padding: 60px 20px;
+      padding: 0px 20px 60px;
     }
     .section h2 {
       color: #00394f;
@@ -30,6 +30,11 @@
   </style>
 </head>
 <body>
+<div class="container mt-4">
+  <a href="index.php" class="btn btn-secondary">
+    ⬅ Volver al inicio
+  </a>
+</div>
 
   <div class="hero">
     <h1>Sobre Nosotros</h1>
@@ -38,15 +43,21 @@
 
   <main class="container section">
     <div class="text-center mb-5">
-      <img src="Logo2.png" alt="Stocky Logo" width="120" class="mb-3">
+      <img src="Logo2.png" alt="Stocky Logo" height="180" class="mb-3">
       <p class="lead">Somos un equipo apasionado por hacer que la gestión de negocios sea más simple, accesible y eficiente.</p>
-      <div class="text-center my-4">
-  <a href="index.php" class="btn btn-outline-primary btn-lg">
-    ⬅ Volver al inicio
-  </a>
-</div>
+      
     </div>
-
+ <hr class="my-5">
+    <div class="text-center">
+      <h3>¿Qué es Stocky?</h3>
+      <p class="mt-3">
+        <strong>Stocky</strong> es una aplicación creada para gestionar ventas, inventario y contabilidad de forma intuitiva.
+        Buscamos ofrecer una plataforma fácil de usar, pensada especialmente para los negocios que quieren dar un paso hacia la digitalización,
+        sin necesidad de conocimientos técnicos ni grandes inversiones.
+      </p>
+      <p>Porque creemos que <strong>cada emprendedor merece herramientas profesionales</strong> para crecer.</p>
+    </div>
+ <hr class="my-5">
     <div class="row align-items-center mb-5">
       <div class="col-md-6">
         
@@ -74,17 +85,9 @@
       </div>
     </div>
 
-    <hr class="my-5">
+   
 
-    <div class="text-center">
-      <h3>¿Qué es Stocky?</h3>
-      <p class="mt-3">
-        <strong>Stocky</strong> es una aplicación creada para gestionar ventas, inventario y contabilidad de forma intuitiva.
-        Buscamos ofrecer una plataforma fácil de usar, pensada especialmente para los negocios que quieren dar un paso hacia la digitalización,
-        sin necesidad de conocimientos técnicos ni grandes inversiones.
-      </p>
-      <p>Porque creemos que <strong>cada emprendedor merece herramientas profesionales</strong> para crecer.</p>
-    </div>
+    
   </main>
 
   <?php include 'footer.php'; ?>
