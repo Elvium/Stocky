@@ -95,6 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- Versión del sistema -->
       
     </form>
+    <p class="mt-3 text-center">
+  <a href="quienes_somos.php" style="text-decoration:none; color:#007bff;">¿Quiénes somos?</a>
+</p>
+
     <p class="mt-4 mb-0 text-center" style="color:#2C3E50; font-weight:500;">V.1.02</p>
   </div>
    <!-- Versión debajo de la tarjeta -->
