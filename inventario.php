@@ -146,7 +146,8 @@ $brands_result = $brands->get_result();
                     <?php endwhile; ?>
                     
                 </select>
-                <input type="text" name="name" id="nameInput" class="form-control mt-2 d-none" placeholder="Nuevo insumo">
+                <input type="text" name="name" id="nameInput" class="form-control mt-2 d-none" placeholder="Nombre del insumo">
+
             </div>
 
             <!-- Marca / Proveedor -->
@@ -160,7 +161,8 @@ $brands_result = $brands->get_result();
                     <?php endwhile; ?>
                     
                 </select>
-                <input type="text" name="brand" id="brandInput" class="form-control mt-2 d-none" placeholder="Nueva marca/proveedor">
+                <input type="text" name="brand" id="brandInput" class="form-control mt-2 d-none" placeholder="Nombre de la marca o proveedor">
+
             </div>
         </div>
 
