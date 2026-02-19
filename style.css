@@ -130,11 +130,14 @@ form .btn {
     margin-top: 10px;
   }
 }
-/* --- Navbar personalizada con degradado invertido --- */
+/* --- Navbar con degradado desde blanco para el logo --- */
 .navbar-custom {
-  background: linear-gradient(135deg, #4db6ac, #1b2c34);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(90deg, #ffffff 0%, #4db6ac 35%, #1b2c34 100%);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
 }
+
+
 
 .navbar-custom .navbar-brand img {
   height: 40px;
