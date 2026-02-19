@@ -1,0 +1,353 @@
+/* ==============================
+   style.css
+   Estilos personalizados con paleta Stocky
+   ============================== */
+
+/* --- Configuración general --- */
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background-color: #f5f7f9; /* Fondo gris muy claro */
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: #1f3b4d;
+  margin: 0;
+  padding-top: 70px; /* espacio para la navbar fija */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+main {
+  flex: 1;
+}
+
+/* --- Navbar --- */
+.navbar {
+  background-color: #1f3b4d; /* Azul oscuro */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+.navbar-brand {
+  font-weight: bold;
+  color: #ffffff !important; /* Logo/Nombre en blanco */
+}
+.navbar-nav .nav-link {
+  color: #f5f7f9 !important; /* Gris claro */
+  transition: color 0.3s;
+}
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  font-weight: 600;
+  color: #4cb7b5 !important; /* Turquesa */
+}
+
+/* --- Contenedores principales --- */
+.container-section {
+  background: #ffffff; /* Fondo blanco */
+  border-radius: 12px;
+  padding: 25px;
+  margin-bottom: 40px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+/* --- Títulos de sección --- */
+h2.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1f3b4d; /* Azul oscuro */
+  margin-bottom: 20px;
+  border-left: 5px solid #4cb7b5; /* Turquesa */
+  padding-left: 10px;
+}
+
+/* --- Formularios --- */
+form label {
+  font-weight: 500;
+  margin-top: 10px;
+  color: #1f3b4d;
+}
+form .form-control {
+  border-radius: 10px;
+  box-shadow: none;
+  border: 1px solid #ced4da;
+}
+form .form-control:focus {
+  border-color: #4cb7b5;
+  box-shadow: 0 0 5px rgba(76, 183, 181, 0.4);
+}
+form .btn {
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 500;
+}
+
+/* --- Tablas --- */
+.table {
+  border-radius: 10px;
+  overflow: hidden;
+}
+.table thead {
+  background-color: #1f3b4d; /* Azul oscuro */
+  color: #ffffff;
+}
+.table tbody tr:hover {
+  background-color: #f5f7f9; /* Gris claro */
+}
+
+/* --- Botones personalizados --- */
+.btn-primary {
+  background-color: #4cb7b5; /* Turquesa */
+  border: none;
+}
+.btn-success {
+  background-color: #198754; /* Verde original */
+  border: none;
+}
+.btn-danger {
+  background-color: #dc3545; /* Rojo */
+  border: none;
+}
+.btn-info {
+  background-color: #1f3b4d; /* Azul oscuro */
+  border: none;
+}
+.btn:hover {
+  opacity: 0.9;
+}
+
+/* --- Responsividad extra --- */
+@media (max-width: 768px) {
+  .container-section {
+    padding: 15px;
+  }
+  h2.section-title {
+    font-size: 1.2rem;
+  }
+  form .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
+/* --- Navbar personalizada con degradado invertido --- */
+.navbar-custom {
+  background: linear-gradient(135deg, #4db6ac, #1b2c34);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.navbar-custom .navbar-brand img {
+  height: 40px;
+}
+
+.navbar-custom .nav-link {
+  color: #f5f7f9 !important; /* Gris claro */
+  transition: color 0.3s;
+}
+
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+  font-weight: 600;
+  color: #ffffff !important; /* Blanco al hover */
+}
+
+.navbar-custom .btn-danger {
+  background-color: #dc3545;
+  border: none;
+}
+
+/* --- Efecto hover elegante en enlaces de la navbar --- */
+.navbar-custom .nav-link {
+  position: relative;
+  color: #f5f7f9 !important; /* Gris claro */
+  transition: color 0.3s ease;
+}
+
+.navbar-custom .nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: #ffffff; /* Blanco para contraste */
+  transition: width 0.3s ease;
+}
+
+.navbar-custom .nav-link:hover {
+  color: #ffffff !important; /* Se pone blanco al hover */
+}
+
+.navbar-custom .nav-link:hover::after,
+.navbar-custom .nav-link.active::after {
+  width: 100%;
+}
+
+/* --- Iconos del menú --- */
+.navbar-nav .nav-link::before {
+  margin-right: 5px;
+  font-size: 1.1rem;
+}
+
+/* --- Dashboard cards --- */
+.card {
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+.card-title {
+  font-weight: 600;
+  color: #1f3b4d;
+}
+.card-text {
+  font-size: 0.9rem;
+  color: #6c757d;
+}
+
+/* --- Layout para footer fijo --- */
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1; /* empuja el footer hacia abajo */
+}
+
+footer {
+  margin-bottom: auto;
+}
+
+/* --- Footer personalizado --- */
+.footer-custom {
+  background: linear-gradient(135deg, #1b2c34, #4db6ac);
+  color: #fff;
+  margin-top: auto;
+}
+
+.footer-custom p,
+.footer-custom small {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.footer-custom small {
+  opacity: 0.85;
+}
+/* Unificar botones <a> y <button> */
+a.btn,
+button.btn {
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-weight: 500;
+}
+.btn-sm {
+  min-width: 80px; /* ajusta el valor según prefieras */
+  text-align: center;
+}
+
+.no-uppercase {
+  text-transform: none !important;
+}
+
+/* Botón Volver al Inicio estilo esquema */
+.btn-dashboard {
+  background-color: transparent; /* Estilo outline */
+  color: #4cb7b5; /* Turquesa */
+  border: 2px solid #4cb7b5;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-dashboard:hover {
+  background-color: #4cb7b5; /* Fondo turquesa */
+  color: #ffffff; /* Texto blanco */
+  border-color: #4cb7b5;
+}
+
+.btn-dashboard:active {
+  background-color: #1b2c34; /* Azul oscuro al presionar */
+  border-color: #1b2c34;
+  color: #ffffff;
+}
+
+/* Accordion personalizado para instrucciones */
+.accordion-button {
+  background-color: #1f3b4d; /* Azul oscuro */
+  color: #ffffff; /* Texto blanco */
+  font-weight: 500;
+}
+
+.accordion-button:hover {
+  background-color: #4cb7b5; /* Turquesa */
+  color: #ffffff;
+}
+
+.accordion-button:focus {
+  box-shadow: 0 0 0 0.25rem rgba(76, 183, 181, 0.5); /* Turquesa semitransparente */
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #4cb7b5; /* Turquesa activo */
+  color: #ffffff;
+}
+
+.accordion-body {
+  background-color: #f5f7f9; /* Gris muy claro */
+  color: #1f3b4d; /* Texto azul oscuro */
+}
+
+.accordion-item {
+  border: 1px solid #4cb7b5; /* Bordes turquesa */
+  border-radius: 10px;
+  margin-bottom: 10px;
+  overflow: hidden;
+}
+.btn-instrucciones {
+  background-color: #4cb7b5; /* Turquesa */
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  transition: background 0.3s;
+}
+
+.btn-instrucciones:hover {
+  background-color: #1f3b4d; /* Azul oscuro */
+  color: #ffffff;
+}
+
+.table-responsive {
+  overflow-x: auto;
+}
+.receta-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+.receta-nombre {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
+.receta-precio {
+  background: #fff;
+  color: #1f3b4d;
+  font-weight: bold;
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 1rem;
+  white-space: nowrap;
+  margin-right: 10px;
+}
+
+.table th {
+  text-align: center;
+  vertical-align: middle; /* Opcional: alinea verticalmente también */
+}
