@@ -138,11 +138,11 @@ $brands_result = $brands->get_result();
             <div class="col-md-6">
                 <label class="form-label">Nombre del insumo</label>
                 <select class="form-select" name="name" id="nameSelect" onchange="toggleNameInput(this)">
-                    <option value="other">Crear Nuevo insumo</option>
+                    
                     <?php while ($n = $names_result->fetch_assoc()): ?>
                         <option value="<?= htmlspecialchars($n['name']) ?>"><?= htmlspecialchars($n['name']) ?></option>
                     <?php endwhile; ?>
-                    
+                    <option value="other">Crear Nuevo insumo</option>
                 </select>
                 <input type="text" name="name" id="nameInput" class="form-control mt-2 d-none" placeholder="Nuevo insumo">
             </div>
@@ -151,11 +151,11 @@ $brands_result = $brands->get_result();
             <div class="col-md-6">
                 <label class="form-label">Marca / Proveedor</label>
                 <select class="form-select" name="brand" id="brandSelect" onchange="toggleBrandInput(this)">
-                    <option value="other">Crear nueva Marca / Proveedor</option>
+                    
                     <?php while ($b = $brands_result->fetch_assoc()): ?>
                         <option value="<?= htmlspecialchars($b['brand']) ?>"><?= htmlspecialchars($b['brand']) ?></option>
                     <?php endwhile; ?>
-                    
+                    <option value="other">Crear nueva Marca / Proveedor</option>
                 </select>
                 <input type="text" name="brand" id="brandInput" class="form-control mt-2 d-none" placeholder="Nueva marca/proveedor">
             </div>

@@ -106,7 +106,31 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </div>
 </div>
 
-
+<!-- Paso 6 -->
+<div class="accordion-item">
+  <h2 class="accordion-header" id="heading6">
+    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
+      📖 <strong>GUIA DE PREPARACION:</strong> Consulta Recetas y Composición de Productos
+    </button>
+  </h2>
+  <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
+    <div class="accordion-body">
+      <p>
+        En la sección de <strong>Recetas</strong> puedes consultar en detalle cómo está compuesto cada producto de tu menú.  
+        Allí verás qué insumos utiliza, en qué cantidades y cómo impacta en el costo total de producción.
+      </p>
+      <ul>
+        <li>Desde el menú <strong>Inicio</strong>, accede a la sección <strong>Recetas</strong>.</li>
+        <li>Selecciona un producto para visualizar su receta.</li>
+        <li>La receta mostrará los insumos exactos usados y sus cantidades.</li>
+        <li>Esto permite analizar <strong>costos de producción</strong> y garantizar consistencia en la preparación.</li>
+      </ul>
+      <div class="alert alert-info mt-2">
+        ℹ️ <strong>Tip:</strong> Usa esta sección para capacitar a tu equipo en la preparación de los productos y asegurar que todos utilicen las mismas cantidades de insumos.
+      </div>
+    </div>
+  </div>
+</div>
 
 
 
@@ -243,31 +267,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </div>
 </div>
 
-<!-- Paso 6 -->
-<div class="accordion-item">
-  <h2 class="accordion-header" id="heading6">
-    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
-      📖 <strong>GUIA DE PREPARACION:</strong> Consulta Recetas y Composición de Productos
-    </button>
-  </h2>
-  <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
-    <div class="accordion-body">
-      <p>
-        En la sección de <strong>Recetas</strong> puedes consultar en detalle cómo está compuesto cada producto de tu menú.  
-        Allí verás qué insumos utiliza, en qué cantidades y cómo impacta en el costo total de producción.
-      </p>
-      <ul>
-        <li>Desde el menú <strong>Inicio</strong>, accede a la sección <strong>Recetas</strong>.</li>
-        <li>Selecciona un producto para visualizar su receta.</li>
-        <li>La receta mostrará los insumos exactos usados y sus cantidades.</li>
-        <li>Esto permite analizar <strong>costos de producción</strong> y garantizar consistencia en la preparación.</li>
-      </ul>
-      <div class="alert alert-info mt-2">
-        ℹ️ <strong>Tip:</strong> Usa esta sección para capacitar a tu equipo en la preparación de los productos y asegurar que todos utilicen las mismas cantidades de insumos.
-      </div>
-    </div>
-  </div>
-</div>
+
 
 
 

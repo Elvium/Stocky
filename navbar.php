@@ -16,7 +16,7 @@
       <ul class="navbar-nav me-auto">
         
           <li class="nav-item"><a class="nav-link" href="dashboard.php">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="instrucciones.php">Como usar tu Stocky</a></li>
+          <li class="nav-item"><a class="nav-link" href="instrucciones.php">¿Cómo usar tu Stocky?</a></li>
           <li class="nav-item"><a class="nav-link" href="contacto.php">Contacto</a></li>
         
       </ul>
