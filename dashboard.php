@@ -312,7 +312,18 @@ $insumos_bajos = $conexion->query("
       </div>
     </div>
 
-  
+  <!-- RECETAS -->
+  <div class="col-md-6 col-lg-3">
+    <div class="card text-center shadow-sm h-100">
+      <div class="card-body">
+        <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📖</div>
+        <h5 class="card-title">Guía de Preparación</h5>
+        <p class="card-text">Consulta las recetas disponibles de tu tienda.</p>
+        <a href="recetas.php" class="btn btn-primary">Ir a Recetas</a>
+      </div>
+    </div>
+  </div>
+
 
     <!-- PEDIDOS -->
     <div class="col-md-6 col-lg-3">
@@ -338,18 +349,7 @@ $insumos_bajos = $conexion->query("
       </div>
     </div>
 
-  <!-- RECETAS -->
-  <div class="col-md-6 col-lg-3">
-    <div class="card text-center shadow-sm h-100">
-      <div class="card-body">
-        <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📖</div>
-        <h5 class="card-title">Guía de Preparación</h5>
-        <p class="card-text">Consulta las recetas disponibles de tu tienda.</p>
-        <a href="recetas.php" class="btn btn-primary">Ir a Recetas</a>
-      </div>
-    </div>
-  </div>
-
+  
  <!-- GASTOS -->
 <div class="col-md-6 col-lg-3">
   <div class="card text-center shadow-sm h-100">
