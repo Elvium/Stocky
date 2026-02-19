@@ -140,7 +140,7 @@ $brands_result = $brands->get_result();
                 <select class="form-select" name="name" id="nameSelect" onchange="toggleNameInput(this)">
                     <option value="" disabled selected hidden>Selecciona/crea un insumo</option>
 
-                    <option value="other">Nuevo insumo</option>
+                    <option value="other">Nombre del insumo</option>
                     <?php while ($n = $names_result->fetch_assoc()): ?>
                         <option value="<?= htmlspecialchars($n['name']) ?>"><?= htmlspecialchars($n['name']) ?></option>
                     <?php endwhile; ?>
@@ -154,7 +154,7 @@ $brands_result = $brands->get_result();
                 <label class="form-label">Marca / Proveedor</label>
                 <select class="form-select" name="brand" id="brandSelect" onchange="toggleBrandInput(this)">
                     <option value="" disabled selected hidden>Selecciona/crea una marca o proveedor</option>
-                    <option value="other">Nueva Marca / Proveedor</option>
+                    <option value="other">Nombre de Marca / Proveedor</option>
                     <?php while ($b = $brands_result->fetch_assoc()): ?>
                         <option value="<?= htmlspecialchars($b['brand']) ?>"><?= htmlspecialchars($b['brand']) ?></option>
                     <?php endwhile; ?>
