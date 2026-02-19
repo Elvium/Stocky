@@ -1,4 +1,5 @@
-<nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-custom">
+<nav class="navbar navbar-expand-lg navbar-light fixed-top navbar-custom">
+
   <div class="container-fluid">
     <!-- Logo sin texto -->
     <a class="navbar-brand" href="dashboard.php">

@@ -43,6 +43,14 @@ main {
   color: #4cb7b5 !important; /* Turquesa */
 }
 
+.navbar-custom .navbar-toggler {
+  border-color: rgba(31, 59, 77, 0.4);
+}
+
+.navbar-custom .navbar-toggler-icon {
+  filter: invert(0);
+}
+
 /* --- Contenedores principales --- */
 .container-section {
   background: #ffffff; /* Fondo blanco */
@@ -162,10 +170,12 @@ form .btn {
 /* --- Efecto hover elegante en enlaces de la navbar --- */
 .navbar-custom .nav-link {
   position: relative;
-  color: #f5f7f9 !important; /* Gris claro */
+  color: #1f3b4d !important; /* Mismo color que tus h1/h2 */
+  font-weight: 500;
   transition: color 0.3s ease;
 }
 
+/* Subrayado elegante */
 .navbar-custom .nav-link::after {
   content: "";
   position: absolute;
@@ -173,7 +183,7 @@ form .btn {
   left: 0;
   width: 0%;
   height: 2px;
-  background-color: #ffffff; /* Blanco para contraste */
+  background-color: #1f3b4d; /* Mismo color que el texto */
   transition: width 0.3s ease;
 }
 
@@ -181,10 +191,17 @@ form .btn {
   color: #ffffff !important; /* Se pone blanco al hover */
 }
 
+/* Hover y activo */
+.navbar-custom .nav-link:hover,
+.navbar-custom .nav-link.active {
+  font-weight: 600;
+  color: #1b2c34 !important; /* Un poco más oscuro */
+}
 .navbar-custom .nav-link:hover::after,
 .navbar-custom .nav-link.active::after {
   width: 100%;
 }
+
 
 /* --- Iconos del menú --- */
 .navbar-nav .nav-link::before {
