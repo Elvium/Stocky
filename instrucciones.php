@@ -31,7 +31,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading1">
     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
-      1️⃣ <strong>INVENTARIO</strong>: Ingresa los insumos de tu tienda
+      1️⃣ <strong>INVENTARIO</strong>:  Ingresa los insumos de tu tienda
     </button>
   </h2>
   <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#instruccionesAccordion">
@@ -80,7 +80,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading2">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
-      2️⃣ <strong>RECETAS:</strong> Ingresa los ingredientes para crear las recetas de tu menú
+      2️⃣ <strong>RECETAS:</strong>  Ingresa los ingredientes para crear las recetas de tu menú
     </button>
   </h2>
   <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
@@ -110,7 +110,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading6">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse6">
-      📖 <strong>GUIA DE PREPARACION:</strong> Consulta Recetas y Composición de Productos
+      📖 <strong>GUIA DE PREPARACION:</strong>  Consulta Recetas y Composición de Productos
     </button>
   </h2>
   <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
@@ -139,7 +139,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading3">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
-      3️⃣ <strong>PEDIDOS:</strong> Registra los pedidos de los clientes
+      3️⃣ <strong>PEDIDOS:</strong>  Registra los pedidos de los clientes
     </button>
   </h2>
   <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
@@ -175,7 +175,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading4">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse4">
-      4️⃣ <strong>ESTADO DE PEDIDOS:</strong> Controla los estados de los pedidos
+      4️⃣ <strong>ESTADO DE PEDIDOS:</strong>  Controla los estados de los pedidos
     </button>
   </h2>
   <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
@@ -209,7 +209,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading2_1">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2_1">
-      💰 <strong>GASTOS:</strong> Registra Gastos diarios
+      💰 <strong>GASTOS:</strong>  Registra Gastos diarios
     </button>
   </h2>
   <div id="collapse2_1" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
@@ -246,7 +246,7 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
 <div class="accordion-item">
   <h2 class="accordion-header" id="heading5">
     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse5">
-      5️⃣ <strong>INFORMES:</strong> Descarga informes mensuales y diarios para la contabilidad de tu negocio
+      5️⃣ <strong>INFORMES:</strong>  Descarga informes mensuales y diarios para la contabilidad de tu negocio
     </button>
   </h2>
   <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
