@@ -36,6 +36,19 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </h2>
   <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
+
+<!-- Video tutorial  -->
+<div class="video-wrapper my-3">
+  <video controls preload="metadata" poster="img/poster-inventario.jpg">
+    <source src="videos/inventario.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+
+</div>
+
+<small class="text-muted d-block mt-2 text-center">
+    ▶️ Video: Cómo registrar y administrar tu inventario en Stocky
+  </small>
       <p>
         En esta sección configuras el <strong>Inventario</strong>, donde registras todos los insumos que tu negocio utiliza para preparar productos. 
         Este paso es fundamental porque a partir de aquí se controlará el consumo y stock de tu tienda.
@@ -85,6 +98,17 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </h2>
   <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
+
+<div class="video-wrapper my-3">
+  <video controls preload="metadata" >
+    <source src="videos/Recetas.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+  
+</div>
+<small class="text-muted d-block mt-2 text-center">
+    ▶️ Video: Cómo crear tus recetas en Stocky
+  </small>
       <p>
         Aquí defines los <strong>Productos</strong> que ofrecerás en tu negocio, vinculándolos a los insumos del inventario. 
         Esto asegura que cada venta descuente automáticamente los insumos utilizados.
@@ -115,6 +139,19 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </h2>
   <div id="collapse6" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
+
+    <div class="video-wrapper my-3">
+  <video controls preload="metadata" >
+    <source src="videos/Guia.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+  
+</div>
+
+<small class="text-muted d-block mt-2 text-center">
+    ▶️ Video: Cómo visualizar tus recetas en Stocky
+  </small>
+
       <p>
         En la sección de <strong>Recetas</strong> puedes consultar en detalle cómo está compuesto cada producto de tu menú.  
         Allí verás qué insumos utiliza, en qué cantidades y cómo impacta en el costo total de producción.
@@ -144,6 +181,17 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </h2>
   <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
+
+<div class="video-wrapper my-3">
+  <video controls preload="metadata" >
+    <source src="videos/Realizar pedidos.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+ 
+</div>
+ <small class="text-muted d-block mt-2 text-center">
+    ▶️ Video: Cómo tomar pedidos en Stocky
+  </small>
       <p>
         En la sección de <strong>Pedidos</strong> registras los pedidos que realizan tus clientes. 
         Aquí seleccionas productos, ajustas cantidades y confirmas la venta.
@@ -180,6 +228,17 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </h2>
   <div id="collapse4" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
+
+    <div class="video-wrapper my-3">
+  <video controls preload="metadata" >
+    <source src="videos/Estado de pedidos.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+ 
+</div>
+ <small class="text-muted d-block mt-2 text-center">
+    ▶️ Video: Cómo visualizar tus pedidos en Stocky
+  </small>
       <p>
         En la sección de <strong>Estado de Pedidos</strong> puedes gestionar el estado de los pedidos recientes en dos aspectos:<span class="badge bg-warning text-dark">Entregado</span> y <span class="badge bg-warning text-dark">Pagodo</span>, de manera independiente.. 
     
@@ -214,6 +273,19 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </h2>
   <div id="collapse2_1" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
+
+
+    <div class="video-wrapper my-3">
+  <video controls preload="metadata" >
+    <source src="videos/Registro de gastos.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+ 
+</div>
+
+ <small class="text-muted d-block mt-2 text-center">
+    ▶️ Video: Cómo administrar tu gastos adicionales en Stocky
+  </small>
       <p>
         En esta sección podrás registrar <strong>gastos adicionales</strong> (como servicios, domiciliarios, pagos a empleados o compras menores) 
         que requiere tu negocio.  
@@ -251,6 +323,17 @@ require 'verificar_sesion.php'; // asegúrate de que solo entren usuarios loguea
   </h2>
   <div id="collapse5" class="accordion-collapse collapse" data-bs-parent="#instruccionesAccordion">
     <div class="accordion-body">
+
+<div class="video-wrapper my-3">
+  <video controls preload="metadata" >
+    <source src="videos/Informes de gastos.mp4" type="video/mp4">
+    Tu navegador no soporta videos HTML5.
+  </video>
+  
+</div>
+<small class="text-muted d-block mt-2 text-center">
+    ▶️ Video: Cómo obtener tu cierre de caja y reporte mensual en Stocky
+  </small>
       <p>
         En esta sección podrás generar <strong>informes detallados</strong> de las ventas y el consumo de insumos en formato PDF. 
         Estos reportes te ayudarán a llevar un control contable más organizado y a identificar tendencias en tu negocio.

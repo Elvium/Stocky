@@ -64,11 +64,13 @@ $logs_result = $conexion->query("SELECT name, price, changed_at
       <div class="col-md-6">
         <label class="form-label">Concepto del gasto</label>
         <select class="form-select" name="name" id="nameSelect" onchange="toggleNameInput(this)" required>
-          <option value="">-- Seleccione --</option>
+          <option value="" disabled selected hidden>Selecciona/crea un Gasto</option>
+          
+          <option value="other">Nuevo Gasto</option>
           <?php while ($n = $names_result->fetch_assoc()): ?>
               <option value="<?= htmlspecialchars($n['name']) ?>"><?= htmlspecialchars($n['name']) ?></option>
           <?php endwhile; ?>
-          <option value="other">Otro...</option>
+          
         </select>
         <input type="text" name="nameInput" id="nameInput" class="form-control mt-2 d-none" placeholder="Nuevo concepto de gasto">
       </div>
