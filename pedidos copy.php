@@ -9,11 +9,18 @@ $store_id = $_SESSION['store_id'];
 // --- Obtener productos con stock disponible ---
 $productos_stmt = $conexion->prepare("
     SELECT p.id, p.name, p.price,
-        (SELECT MIN(FLOOR(i.quantity / pm.qty_needed))
-         FROM product_materials pm
-         JOIN inventory i ON pm.inventory_id = i.id
-         WHERE pm.product_id = p.id
-           AND i.store_id = ? ) AS stock_disponible
+        (
+            SELECT 
+                CASE 
+                    WHEN COUNT(*) = 0 THEN 9999
+                    ELSE MIN(FLOOR(i.quantity / pm.qty_needed))
+                END
+            FROM product_materials pm
+            JOIN inventory i ON pm.inventory_id = i.id
+            WHERE pm.product_id = p.id
+              AND i.store_id = ?
+              AND pm.qty_needed > 0
+        ) AS stock_disponible
     FROM products p
     WHERE p.store_id = ?
 ");

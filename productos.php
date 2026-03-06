@@ -52,7 +52,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_name'])) {
             $inventory_id = intval($inventory_id);
             $qty_needed = floatval($insumo_qtys[$i] ?? 0);
 
-            if ($inventory_id > 0 && $qty_needed > 0) {
+            if ($inventory_id > 0) {
                 $insert_material->bind_param("iid", $product_id, $inventory_id, $qty_needed);
                 $insert_material->execute();
             }
@@ -139,10 +139,18 @@ $productos_result = $productos->get_result();
                 <?php endforeach; ?>
             </select>
         </div>
-        <div class="col-md-4 d-flex">
-            <input type="number" name="insumo_qty[]" class="form-control me-2" placeholder="Cantidad" min="0">
-            <span class="unit-label"></span>
-        </div>
+        <div class="col-md-4">
+    <div class="form-check mb-1">
+        <input class="form-check-input usar-cantidad" type="checkbox">
+        <label class="form-check-label">
+            ¿Adicionar cantidad exacta?
+        </label>
+    </div>
+    <div class="d-flex align-items-center">
+        <input type="number" name="insumo_qty[]" class="form-control me-2 cantidad-input d-none" placeholder="Cantidad" min="0" step="0.01">
+        <span class="unit-label"></span>
+    </div>
+</div>
     </div>
 <?php endfor; ?>
 
@@ -195,6 +203,24 @@ document.querySelectorAll('select[name="insumo_id[]"]').forEach(select => {
         unitSpan.textContent = insumoUnits[selectedId] || '';
     });
 });
+
+<script>
+document.querySelectorAll('.usar-cantidad').forEach((checkbox, index) => {
+    checkbox.addEventListener('change', function () {
+        const row = this.closest('.row');
+        const input = row.querySelector('.cantidad-input');
+
+        if (this.checked) {
+            input.classList.remove('d-none');
+            input.required = true;
+        } else {
+            input.classList.add('d-none');
+            input.required = false;
+            input.value = 0; // si no se usa, se guarda como 0
+        }
+    });
+});
+</script>
 </script>
 
 
