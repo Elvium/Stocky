@@ -105,7 +105,25 @@ if (isset($_POST['nuevo_seller'])) {
     }
 }
 
+// ================== CAMBIAR MODO DE INVENTARIO ==================
+if (isset($_POST['cambiar_modo']) && $role === 'user') {
 
+    $nuevo_modo = $_POST['modo'];
+
+    if ($nuevo_modo === 'simple' || $nuevo_modo === 'controlado') {
+
+        $stmt = $conexion->prepare("UPDATE stores SET inventory_mode = ? WHERE id = ?");
+        $stmt->bind_param("si", $nuevo_modo, $store_id);
+        $stmt->execute();
+        $stmt->close();
+
+        // actualizar sesión inmediatamente
+        $_SESSION['inventory_mode'] = $nuevo_modo;
+    }
+
+    header("Location: dashboard.php");
+    exit;
+}
 
 // ================== FUNCIONALIDAD USUARIOS TIENDA ==================
 if ($role === 'user' || $role === 'seller') {
@@ -280,6 +298,85 @@ $insumos_bajos = $conexion->query("
   <?php elseif ($role === 'user'): ?>
 <div class="container py-4">
   <h2 class="mb-4">Panel de Administrador</h2>
+ <!-- ================== CONFIGURAR MODO TIENDA ================== -->
+<div class="card shadow-sm mb-4 border-0">
+  <div class="card-body py-3">
+
+    <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
+      <h5 class="mb-0">⚙️ Configurar Modo Tienda</h5>
+      <small class="text-muted">Puedes cambiarlo cuando lo necesites</small>
+    </div>
+
+    <form method="POST">
+      <input type="hidden" name="cambiar_modo" value="1">
+
+      <div class="row g-3">
+
+        <!-- MODO CONTROLADO -->
+        <div class="col-md-6">
+          <button 
+            name="modo" 
+            value="controlado"
+            class="card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'controlado') ? 'border-primary shadow-sm' : 'border-light'; ?>"
+            style="background:white;"
+          >
+            <div class="card-body p-3">
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong>Modo Controlado</strong>
+                <?php if ($_SESSION['inventory_mode'] === 'controlado'): ?>
+                  <span class="badge bg-primary">Activo</span>
+                <?php endif; ?>
+              </div>
+
+              <small class="text-muted">
+                Descuenta automáticamente los insumos al realizar pedidos y calcula cuántos productos puedes preparar según tu inventario.
+              </small>
+
+            </div>
+          </button>
+        </div>
+
+        <!-- MODO SIMPLE -->
+        <div class="col-md-6">
+          <button 
+            name="modo" 
+            value="simple"
+            class="card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'simple') ? 'border-primary shadow-sm' : 'border-light'; ?>"
+            style="background:white;"
+          >
+            <div class="card-body p-3">
+
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <strong>Modo Simple</strong>
+                <?php if ($_SESSION['inventory_mode'] === 'simple'): ?>
+                  <span class="badge bg-primary">Activo</span>
+                <?php endif; ?>
+              </div>
+
+              <small class="text-muted">
+                El inventario se usa solo para registrar costos de insumos. Los pedidos no afectan el stock ni las recetas.
+              </small>
+
+            </div>
+          </button>
+        </div>
+
+      </div>
+
+    </form>
+
+  </div>
+</div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
   <div class="row g-4">
     
     <!-- INVENTARIO -->
