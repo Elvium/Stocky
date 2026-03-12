@@ -160,12 +160,16 @@ if ($role === 'user' || $role === 'seller') {
         $stmt->execute();
         $stmt->close();
     }
-// Aviso de insumos bajos en stock
-$insumos_bajos = $conexion->query("
-    SELECT name, quantity, unit, limite
-    FROM inventory
-    WHERE store_id = $store_id AND quantity < limite
-");
+// Aviso de insumos bajos en stock (solo en modo controlado)
+$insumos_bajos = null;
+
+if ($_SESSION['inventory_mode'] === 'controlado') {
+    $insumos_bajos = $conexion->query("
+        SELECT name, quantity, unit, limite
+        FROM inventory
+        WHERE store_id = $store_id AND quantity < limite
+    ");
+}
 
     // Consultas
     $inventario = $conexion->query("SELECT * FROM inventory WHERE user_id = $user_id");
@@ -198,7 +202,12 @@ $insumos_bajos = $conexion->query("
   <h3 class="mb-4">Bienvenido, <?php echo ($role === 'super') ? "Administrador" : "Tienda $username"; ?></h3>
 
 <!-- ================== AVISO DE INSUMOS INSUFICIENTES ================== -->
- <?php if (($role === 'user' || $role === 'seller') && $insumos_bajos && $insumos_bajos->num_rows > 0): ?>
+<?php if (
+    ($role === 'user' || $role === 'seller') &&
+    $_SESSION['inventory_mode'] === 'controlado' &&
+    $insumos_bajos &&
+    $insumos_bajos->num_rows > 0
+): ?>
   <div class="alert alert-info">
     <strong>⚠️ Atención:</strong> Los siguientes insumos están por agotarse:
     <ul class="mb-0">
