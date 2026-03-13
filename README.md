@@ -1,16 +1,37 @@
-Stocky - Inventory Management System
+# Stocky - Inventory Management System
 
-Stocky is a web application designed to help small businesses manage 
+Stocky is a web application designed to help small businesses manage
 their inventory, suppliers, and product costs.
 
-Technologies:
+## Features
+
+- Product management
+- Supplier management
+- Inventory tracking
+- Cost management
+- Report generation
+
+## Technologies
+
 - PHP
 - MySQL
 - JavaScript
+- HTML / CSS
 - Git
 
-Features:
-- Product registration
-- Supplier management
-- Inventory tracking
-- Report generation
+## Screenshots
+
+### Login
+
+![Login](screenshots/login.png)
+
+### Dashboard
+
+![Dashboard](screenshots/dashboard.png)
+
+### Inventory
+
+![Inventory](screenshots/inventario.png)
+## Author
+
+Oscar Ronaldo Yañez
