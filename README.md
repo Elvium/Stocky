@@ -32,6 +32,11 @@ their inventory, suppliers, and product costs.
 ### Inventory
 
 ![Inventory](screenshots/inventario.png)
+
+### Products
+
+![Inventory](screenshots/productos.png)
+
 ## Author
 
 Oscar Ronaldo Yañez
