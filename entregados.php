@@ -235,7 +235,9 @@ $result = $stmt->get_result();
                   <a href="modificarpedido.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
                     Editar
                   </a>
-                  <a href="?cancelar=<?= $row['id'] ?>" class="btn btn-sm btn-danger">Cancelar</a>
+                  <button class="btn btn-sm btn-danger btn-cancelar" data-id="<?= $row['id'] ?>">
+  Cancelar
+</button>
                 </div>
               </td>
             </tr>
@@ -270,6 +272,23 @@ $result = $stmt->get_result();
     </div>
   </div>
 
+  <div class="modal fade" id="modalCancelar" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Confirmar cancelación</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        ¿Seguro que deseas cancelar este pedido?
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+        <button id="confirmarCancelacion" class="btn btn-danger">Sí, cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
   <script>
     let saleIdSeleccionado = null;
 
@@ -285,6 +304,20 @@ $result = $stmt->get_result();
       const metodo = document.getElementById('metodoPago').value;
       window.location.href = `?pagar=${saleIdSeleccionado}&metodo=${metodo}`;
     });
+
+    let cancelIdSeleccionado = null;
+
+document.querySelectorAll('.btn-cancelar').forEach(btn => {
+  btn.addEventListener('click', () => {
+    cancelIdSeleccionado = btn.dataset.id;
+    const modal = new bootstrap.Modal(document.getElementById('modalCancelar'));
+    modal.show();
+  });
+});
+
+document.getElementById('confirmarCancelacion').addEventListener('click', () => {
+  window.location.href = `?cancelar=${cancelIdSeleccionado}`;
+});
   </script>
 
 </body>
