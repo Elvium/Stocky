@@ -50,9 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
         $total_quantity = $quantity * $size;
     }
 
-    if ($size <= 0)
-        $size = 1;
-    $total_quantity = $quantity * $size;
+   
 
     // Verificar si ya existe un insumo con mismo name + brand en esta tienda
     $check = $conexion->prepare("SELECT id, quantity FROM inventory WHERE name = ? AND brand = ? AND store_id = ?");
@@ -71,13 +69,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !isset($_POST['delete_id'])) {
         $log = $conexion->prepare("INSERT INTO inventory_logs 
         (inventory_id, store_id, action, name, quantity, unit, price) 
         VALUES (?, ?, 'update', ?, ?, ?, ?)");
+        $quantity_log = ($modo === 'simple') ? NULL : $new_quantity;
+        $unit_log = ($modo === 'simple') ? NULL : $unit;
+
         $log->bind_param(
             "iisdss",
-            $row['id'],        // inventory_id
-            $store_id,         // store_id
-            $name,             // name
-            ($modo === 'simple' ? NULL : $new_quantity),
-            ($modo === 'simple' ? NULL : $unit),
+            $row['id'],
+            $store_id,
+            $name,
+            $quantity_log,
+            $unit_log,
             $price
         );
         $log->execute();
