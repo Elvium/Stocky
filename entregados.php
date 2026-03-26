@@ -31,8 +31,8 @@ if (isset($_GET['entregar'])) {
     }
 
     if ($new !== $cur) {
-      $u = $conexion->prepare("UPDATE sales SET status = ?, payment_method = ? WHERE id = ? AND store_id = ?");
-      $u->bind_param("ssii", $new, $metodo, $sale_id, $store_id);
+      $u = $conexion->prepare("UPDATE sales SET status = ? WHERE id = ? AND store_id = ?");
+      $u->bind_param("sii", $new, $sale_id, $store_id);
       $u->execute();
     }
   }
@@ -78,16 +78,7 @@ if (isset($_GET['pagar']) && isset($_GET['metodo'])) {
   exit;
 }
 
-if (isset($_GET['cancelar'])) {
-  $sale_id = intval($_GET['cancelar']);
 
-  $u = $conexion->prepare("UPDATE sales SET status = 'Canceled' WHERE id = ? AND store_id = ?");
-  $u->bind_param("ii", $sale_id, $store_id);
-  $u->execute();
-
-  header("Location: entregados.php");
-  exit;
-}
 
 // --- Filtro por estado ---
 // (Reemplaza aquí el bloque $sql antiguo por el siguiente)
@@ -232,12 +223,16 @@ $result = $stmt->get_result();
                   <?php else: ?>
                     <button class="btn btn-sm btn-outline-primary" disabled>Pagado</button>
                   <?php endif; ?>
-                  <a href="modificarpedido.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
-                    Editar
-                  </a>
-                  <button class="btn btn-sm btn-danger btn-cancelar" data-id="<?= $row['id'] ?>">
-  Cancelar
-</button>
+                  <?php if (!$isCanceled): ?>
+                    <a href="modificarpedido.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
+                      Editar
+                    </a>
+                  <?php else: ?>
+                    <button class="btn btn-sm btn-outline-secondary" disabled>
+                      Bloqueado
+                    </button>
+                  <?php endif; ?>
+
                 </div>
               </td>
             </tr>
@@ -272,23 +267,7 @@ $result = $stmt->get_result();
     </div>
   </div>
 
-  <div class="modal fade" id="modalCancelar" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5>Confirmar cancelación</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
-      <div class="modal-body">
-        ¿Seguro que deseas cancelar este pedido?
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">No</button>
-        <button id="confirmarCancelacion" class="btn btn-danger">Sí, cancelar</button>
-      </div>
-    </div>
-  </div>
-</div>
+
   <script>
     let saleIdSeleccionado = null;
 
@@ -305,19 +284,7 @@ $result = $stmt->get_result();
       window.location.href = `?pagar=${saleIdSeleccionado}&metodo=${metodo}`;
     });
 
-    let cancelIdSeleccionado = null;
 
-document.querySelectorAll('.btn-cancelar').forEach(btn => {
-  btn.addEventListener('click', () => {
-    cancelIdSeleccionado = btn.dataset.id;
-    const modal = new bootstrap.Modal(document.getElementById('modalCancelar'));
-    modal.show();
-  });
-});
-
-document.getElementById('confirmarCancelacion').addEventListener('click', () => {
-  window.location.href = `?cancelar=${cancelIdSeleccionado}`;
-});
   </script>
 
 </body>
