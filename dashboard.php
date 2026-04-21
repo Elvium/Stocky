@@ -199,7 +199,7 @@ if ($_SESSION['inventory_mode'] === 'controlado') {
 <?php include 'navbar.php'; ?>
 <main class="container my-5">
 <div class="container mt-4">
-  <h3 class="mb-4">Bienvenido, <?php echo ($role === 'super') ? "Administrador" : "Tienda $username"; ?></h3>
+  <h3 class="mb-4">Bienvenido, <?php echo ($role === 'super') ? "Administrador" : "$username"; ?></h3>
 
 <!-- ================== AVISO DE INSUMOS INSUFICIENTES ================== -->
 <?php if (
@@ -399,11 +399,6 @@ if ($_SESSION['inventory_mode'] === 'controlado') {
         </div>
       </div>
     </div>
-
-   
-
-
-
 
 
     <!-- PRODUCTOS -->
