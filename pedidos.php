@@ -7,6 +7,13 @@ $user_id = $_SESSION['user_id'];
 $store_id = $_SESSION['store_id'];
 $modo = $_SESSION['inventory_mode'] ?? 'controlado';
 
+
+if (($_SESSION['role'] ?? '') === 'kitchen') {
+    header("Location: entregados.php");
+    exit;
+}
+
+
 // --- Obtener productos con stock disponible ---
 $modo = $_SESSION['inventory_mode'] ?? 'controlado';
 
@@ -139,7 +146,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
         <div class="container mt-4">
             <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2 class="m-0">Realizar Pedidos</h2>
-                <a href="dashboard.php" class="btn btn-dashboard btn-sm">⬅ Volver al Inicio</a>
+
+                <div class="d-flex gap-2">
+                    <a href="entregados.php" class="btn btn-success btn-sm">
+                        📦 Ver Entregados
+                    </a>
+
+                    <a href="dashboard.php" class="btn btn-dashboard btn-sm">
+                        ⬅ Volver al Inicio
+                    </a>
+                </div>
             </div>
 
             <!-- Cliente -->

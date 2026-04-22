@@ -5,6 +5,7 @@ require 'verificar_sesion.php';
 
 $user_id = $_SESSION['user_id'];
 $store_id = $_SESSION['store_id'];
+$rol = $_SESSION['role'] ?? '';
 
 // --- Marcar Entregado (ajusta según estado actual: Active→Unpaid, Pending→Closed) ---
 if (isset($_GET['entregar'])) {
@@ -135,7 +136,19 @@ $result = $stmt->get_result();
   <main class="container my-5">
     <div class="d-flex justify-content-between align-items-center mb-3">
       <h2 class="m-0">Pedidos (Pendientes, Entregados y Pagados)</h2>
-      <a href="dashboard.php" class="btn btn-dashboard btn-sm">⬅ Volver al Inicio</a>
+
+      <div class="d-flex gap-2">
+
+        <?php if ($rol !== 'kitchen'): ?>
+          <a href="pedidos.php" class="btn btn-primary btn-sm">
+            🧾 Ir a Pedidos
+          </a>
+        <?php endif; ?>
+
+        <a href="dashboard.php" class="btn btn-dashboard btn-sm">
+          ⬅ Volver al Inicio
+        </a>
+      </div>
     </div>
 
     <!-- Filtro por estado -->
