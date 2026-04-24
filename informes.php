@@ -3,7 +3,7 @@ session_start();
 
 require 'verificar_sesion.php';
 require_once 'dompdf/autoload.inc.php';
-
+$conexion->set_charset("utf8mb4");
 use Dompdf\Dompdf;
 
 $user_id = $_SESSION['user_id'];
@@ -17,7 +17,7 @@ function generarInforme($conexion, $store_id, $fecha_inicio, $fecha_fin)
         FROM sales
         WHERE store_id = ? 
         AND DATE(created_at) BETWEEN ? AND ?
-        AND status != 'Canceled'
+        AND status COLLATE utf8mb4_unicode_ci != 'Canceled'
     ");
     $stmt->bind_param("iss", $store_id, $fecha_inicio, $fecha_fin);
     $stmt->execute();
@@ -29,8 +29,8 @@ function generarInforme($conexion, $store_id, $fecha_inicio, $fecha_fin)
         FROM sales
         WHERE store_id = ?
         AND DATE(created_at) BETWEEN ? AND ?
-        AND status != 'Canceled'
-        AND payment_method != 'Cancelado'
+        AND status COLLATE utf8mb4_unicode_ci != 'Canceled'
+        AND payment_method COLLATE utf8mb4_unicode_ci != 'Cancelado'
         GROUP BY payment_method
     ");
     $stmt->bind_param("iss", $store_id, $fecha_inicio, $fecha_fin);
@@ -45,7 +45,7 @@ function generarInforme($conexion, $store_id, $fecha_inicio, $fecha_fin)
         INNER JOIN sales s ON si.sale_id = s.id
         WHERE s.store_id = ?
         AND DATE(s.created_at) BETWEEN ? AND ?
-        AND s.status != 'Canceled'
+        AND s.status COLLATE utf8mb4_unicode_ci != 'Canceled'
         GROUP BY p.name
     ");
     $stmt->bind_param("iss", $store_id, $fecha_inicio, $fecha_fin);
@@ -58,7 +58,7 @@ function generarInforme($conexion, $store_id, $fecha_inicio, $fecha_fin)
         FROM inventory_logs
         WHERE store_id = ?
         AND DATE(changed_at) BETWEEN ? AND ?
-        AND action IN ('insert','update','gasto')
+        AND action COLLATE utf8mb4_unicode_ci IN ('insert','update','gasto')
     ");
     $stmt->bind_param("iss", $store_id, $fecha_inicio, $fecha_fin);
     $stmt->execute();
@@ -205,7 +205,7 @@ $stmt = $conexion->prepare("
     FROM sales
     WHERE store_id = ?
     AND DATE_FORMAT(created_at, '%Y-%m') = ?
-    AND status != 'Canceled'
+    AND status COLLATE utf8mb4_unicode_ci != 'Canceled'
     GROUP BY DATE(created_at)
 ");
 $stmt->bind_param("is", $store_id, $mes_actual);
@@ -225,8 +225,8 @@ $stmt = $conexion->prepare("
     FROM sales
     WHERE store_id = ?
     AND DATE_FORMAT(created_at, '%Y-%m') = ?
-    AND status != 'Canceled'
-    AND payment_method != 'Cancelado'
+    AND status COLLATE utf8mb4_unicode_ci != 'Canceled'
+    AND payment_method COLLATE utf8mb4_unicode_ci != 'Cancelado'
     GROUP BY payment_method
 ");
 $stmt->bind_param("is", $store_id, $mes_actual);
@@ -241,7 +241,7 @@ $stmt = $conexion->prepare("
     INNER JOIN sales s ON si.sale_id = s.id
     WHERE s.store_id = ?
     AND DATE_FORMAT(s.created_at, '%Y-%m') = ?
-    AND s.status != 'Canceled'
+    AND s.status COLLATE utf8mb4_unicode_ci != 'Canceled'
     GROUP BY p.name
     ORDER BY cantidad DESC
     LIMIT 5
