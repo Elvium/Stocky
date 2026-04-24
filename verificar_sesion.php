@@ -2,9 +2,9 @@
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
-
+date_default_timezone_set('America/Bogota');
 require_once 'conexion.php';
-
+$conexion->query("SET time_zone = '-05:00'");
 // Verificar login
 if (
     !isset($_SESSION['user_id']) ||

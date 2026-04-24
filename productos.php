@@ -28,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_id'])) {
 
 // --- Procesar creación de producto ---
 if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_name'])) {
-    
+
     $name = trim($_POST['product_name']);
     $description = !empty($_POST['description']) ? trim($_POST['description']) : null;
     $price = floatval($_POST['price']);
@@ -52,40 +52,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['product_name'])) {
             $insumo_ids = $_POST['insumo_id'] ?? [];
             $insumo_qtys = $_POST['insumo_qty'] ?? [];
 
-            // Validar que haya al menos un insumo
-            if (empty($insumo_ids)) {
+            // 🔥 SOLO exigir insumos en modo controlado
+            if ($modo === 'controlado' && empty($insumo_ids)) {
                 $message = "❌ Debes seleccionar al menos un insumo.";
             } else {
 
-                // Insertar en product_materials
-                $insert_material = $conexion->prepare(
-                    "INSERT INTO product_materials (product_id, inventory_id, qty_needed) VALUES (?, ?, ?)"
-                );
+                // 🔥 SOLO insertar insumos si aplica
+                if ($modo !== 'pedidos') {
 
-                // Bind una sola vez (más eficiente)
-                $insert_material->bind_param("iid", $product_id, $inventory_id, $qty_needed);
+                    $insert_material = $conexion->prepare(
+                        "INSERT INTO product_materials (product_id, inventory_id, qty_needed) VALUES (?, ?, ?)"
+                    );
 
-                foreach ($insumo_ids as $i => $inventory_id) {
-                    $inventory_id = intval($inventory_id);
+                    $insert_material->bind_param("iid", $product_id, $inventory_id, $qty_needed);
 
-                    if ($modo === 'simple') {
-                        $qty_needed = 1;
-                    } else {
-                        $qty_needed = floatval($insumo_qtys[$i] ?? 0);
+                    foreach ($insumo_ids as $i => $inventory_id) {
+                        $inventory_id = intval($inventory_id);
+
+                        if ($modo === 'simple') {
+                            $qty_needed = 1;
+                        } else {
+                            $qty_needed = floatval($insumo_qtys[$i] ?? 0);
+                        }
+
+                        if ($inventory_id > 0 && $qty_needed > 0) {
+                            $insert_material->execute();
+                        }
                     }
 
-                    if ($inventory_id > 0 && $qty_needed > 0) {
-                        $insert_material->execute();
-                    }
+                    $insert_material->close();
                 }
 
-                $insert_material->close();
-
                 // Mensaje según modo
-                if ($modo === 'simple') {
-                    $message = "✅ Producto guardado correctamente.";
-                } else {
+                if ($modo === 'controlado') {
                     $message = "✅ Producto y receta guardados correctamente.";
+                } else {
+                    $message = "✅ Producto guardado correctamente.";
                 }
             }
 
@@ -166,51 +168,30 @@ $productos_result = $productos->get_result();
                     </div>
                 </div>
 
-                <h5 class="mt-4">Insumos necesarios</h5>
-                <?php if ($modo === 'controlado'): ?>
-                    <?php for ($i = 1; $i <= 10; $i++): ?>
-                        <div class="row mb-2">
-                            <div class="col-md-8">
-                                <select name="insumo_id[]" class="form-select">
-                                    <option value="">-- Seleccione insumo --</option>
-                                    <?php foreach ($insumos_array as $ins): ?>
-                                        <option value="<?= $ins['id'] ?>">
-                                            <?= htmlspecialchars($ins['name']) ?> (<?= htmlspecialchars($ins['brand']) ?>)
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="d-flex align-items-center">
-                                    <input type="number" name="insumo_qty[]" class="form-control me-2" placeholder="Cantidad"
-                                        min="0" step="0.01" required>
-                                    <span class="unit-label"></span>
-                                </div>
-                            </div>
-                        </div>
+                
+                <?php if ($modo !== 'pedidos'): ?>
+    <h5 class="mt-4">Insumos necesarios</h5>
 
-                    <?php endfor; ?>
-                <?php endif; ?>
-
-                <?php if ($modo === 'simple'): ?>
-                    <h5 class="mt-4">Insumos utilizados</h5>
-
-                    <?php for ($i = 1; $i <= 10; $i++): ?>
-                        <div class="row mb-2">
-                            <div class="col-md-12">
-                                <select name="insumo_id[]" class="form-select">
-                                    <option value="">-- Seleccione insumo --</option>
-                                    <?php foreach ($insumos_array as $ins): ?>
-                                        <option value="<?= $ins['id'] ?>">
-                                            <?= htmlspecialchars($ins['name']) ?> (<?= htmlspecialchars($ins['brand']) ?>)
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
-                            </div>
-                        </div>
-                    <?php endfor; ?>
-
-                <?php endif; ?>
+    <?php for ($i = 1; $i <= 10; $i++): ?>
+        <div class="row mb-2">
+            <div class="<?= $modo === 'controlado' ? 'col-md-8' : 'col-md-12' ?>">
+                <select name="insumo_id[]" class="form-select">
+                    <option value="">-- Seleccione insumo --</option>
+                    <?php foreach ($insumos_array as $ins): ?>
+                        <option value="<?= $ins['id'] ?>">
+                            <?= htmlspecialchars($ins['name']) ?> (<?= htmlspecialchars($ins['brand']) ?>)
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <?php if ($modo === 'controlado'): ?>
+    <div class="col-md-4">
+        <input type="number" name="insumo_qty[]" class="form-control" placeholder="Cantidad" min="0" step="0.01">
+    </div>
+<?php endif; ?>
+        </div>
+    <?php endfor; ?>
+<?php endif; ?>
                 <button type="submit" class="btn btn-primary mt-3">Guardar producto</button>
             </form>
 
@@ -264,9 +245,9 @@ $productos_result = $productos->get_result();
             });
         });
 
-        
+
     </script>
-    
+
 
 
 
