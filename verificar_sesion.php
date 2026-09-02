@@ -12,12 +12,12 @@ if (
     !isset($_SESSION['username'])
 ) {
     session_destroy();
-    header("Location: index.php");
+    header("Location: login.php");
     exit;
 }
 
-$user_id  = $_SESSION['user_id'];
-$role     = $_SESSION['role'];
+$user_id = $_SESSION['user_id'];
+$role = $_SESSION['role'];
 $username = $_SESSION['username'];
 
 // 🔎 Obtener modo de inventario de la tienda
@@ -51,7 +51,7 @@ if ($row = $result->fetch_assoc()) {
     if ($row['status'] === 'blocked') {
         // Cerrar sesión y redirigir
         session_destroy();
-        echo "<script>alert('Tu cuenta ha sido bloqueada. Contacta al administrador.'); window.location.href='index.php';</script>";
+        echo "<script>alert('Tu cuenta ha sido bloqueada. Contacta al administrador.'); window.location.href='login.php';</script>";
         exit;
     }
 }

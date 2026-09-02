@@ -9,7 +9,7 @@ if (
   !isset($_SESSION['username'])
 ) {
   session_destroy();
-  header("Location: index.php");
+  header("Location: login.php");
   exit;
 }
 
@@ -21,7 +21,7 @@ $store_id = isset($_SESSION['store_id']) ? $_SESSION['store_id'] : null;
 // ================== CERRAR SESIÓN ==================
 if (isset($_GET['logout'])) {
   session_destroy();
-  header("Location: index.php");
+  header("Location: login.php");
   exit;
 }
 
@@ -125,7 +125,7 @@ if (isset($_POST['cambiar_modo']) && $role === 'user') {
 }
 
 // ================== FUNCIONALIDAD USUARIOS TIENDA ==================
-if (in_array($role, ['user','seller','waiter','kitchen'])) {
+if (in_array($role, ['user', 'seller', 'waiter', 'kitchen'])) {
   // Nuevo material
   if (isset($_POST['nuevo_material'])) {
     $nombre = $_POST['nombre'];
@@ -344,8 +344,10 @@ if (isset($_SESSION['blocked_message'])): ?>
 
                   <!-- MODO CONTROLADO -->
                   <div class="col-md-6">
-                    <button name="modo" value="controlado" onclick="return confirm('¿Seguro que quieres cambiar el modo de la tienda? En modo controlado deberas actualizar tus insumos antes de poder realizar pedidos');"
-                      class=" card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'controlado') ? 'border-primary shadow-sm' : 'border-light'; ?>" style="background:white;">
+                    <button name="modo" value="controlado"
+                      onclick="return confirm('¿Seguro que quieres cambiar el modo de la tienda? En modo controlado deberas actualizar tus insumos antes de poder realizar pedidos');"
+                      class=" card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'controlado') ? 'border-primary shadow-sm' : 'border-light'; ?>"
+                      style="background:white;">
                       <div class="card-body p-3">
 
                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -366,8 +368,10 @@ if (isset($_SESSION['blocked_message'])): ?>
 
                   <!-- MODO SIMPLE -->
                   <div class="col-md-6">
-                    <button name="modo" value="simple" onclick="return confirm('¿Seguro que quieres cambiar el modo de la tienda?');"
-                      class=" card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'simple') ? 'border-primary shadow-sm' : 'border-light'; ?>" style="background:white;">
+                    <button name="modo" value="simple"
+                      onclick="return confirm('¿Seguro que quieres cambiar el modo de la tienda?');"
+                      class=" card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'simple') ? 'border-primary shadow-sm' : 'border-light'; ?>"
+                      style="background:white;">
                       <div class="card-body p-3">
 
                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -388,8 +392,10 @@ if (isset($_SESSION['blocked_message'])): ?>
 
                   <!-- MODO PEDIDOS -->
                   <div class="col-md-6">
-                    <button name="modo" value="pedidos" onclick="return confirm('¿Seguro que quieres cambiar el modo de la tienda? En modo pedidos, no se tendran en cuenta los insumos al realizar pedidos');"
-                      class=" card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'pedidos') ? 'border-primary shadow-sm' : 'border-light'; ?>" style="background:white;">
+                    <button name="modo" value="pedidos"
+                      onclick="return confirm('¿Seguro que quieres cambiar el modo de la tienda? En modo pedidos, no se tendran en cuenta los insumos al realizar pedidos');"
+                      class=" card h-100 text-start border <?php echo ($_SESSION['inventory_mode'] === 'pedidos') ? 'border-primary shadow-sm' : 'border-light'; ?>"
+                      style="background:white;">
                       <div class="card-body p-3">
 
                         <div class="d-flex justify-content-between align-items-center mb-2">
@@ -423,103 +429,103 @@ if (isset($_SESSION['blocked_message'])): ?>
       </div>
       </div>
 
-<?php if ($_SESSION['inventory_mode'] !== 'pedidos'): ?>
-      <div class="row g-4">
+      <?php if ($_SESSION['inventory_mode'] !== 'pedidos'): ?>
+        <div class="row g-4">
 
-        <!-- INVENTARIO -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📦</div>
-              <h5 class="card-title">Inventario</h5>
-              <p class="card-text">Ingresa los insumos de tu tienda</p>
-              <a href="inventario.php" class="btn btn-primary">Ir a Inventario</a>
+          <!-- INVENTARIO -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
+              <div class="card-body">
+                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📦</div>
+                <h5 class="card-title">Inventario</h5>
+                <p class="card-text">Ingresa los insumos de tu tienda</p>
+                <a href="inventario.php" class="btn btn-primary">Ir a Inventario</a>
+              </div>
             </div>
           </div>
-        </div>
 
 
-        <!-- PRODUCTOS -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🍽️</div>
-              <h5 class="card-title">Recetas</h5>
-              <p class="card-text">Ingresa los ingredientes para los productos de tu menú</p>
-              <a href="productos.php" class="btn btn-primary">Ir a Productos</a>
+          <!-- PRODUCTOS -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
+              <div class="card-body">
+                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🍽️</div>
+                <h5 class="card-title">Recetas</h5>
+                <p class="card-text">Ingresa los ingredientes para los productos de tu menú</p>
+                <a href="productos.php" class="btn btn-primary">Ir a Productos</a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- RECETAS -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📖</div>
-              <h5 class="card-title">Guía de Preparación</h5>
-              <p class="card-text">Consulta las recetas disponibles de tu tienda.</p>
-              <a href="recetas.php" class="btn btn-primary">Ir a Recetas</a>
+          <!-- RECETAS -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
+              <div class="card-body">
+                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📖</div>
+                <h5 class="card-title">Guía de Preparación</h5>
+                <p class="card-text">Consulta las recetas disponibles de tu tienda.</p>
+                <a href="recetas.php" class="btn btn-primary">Ir a Recetas</a>
+              </div>
             </div>
           </div>
-        </div>
 
 
-        <!-- PEDIDOS -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
-              <h5 class="card-title">Pedidos</h5>
-              <p class="card-text">Realiza y registra los pedidos para los clientes.</p>
-              <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
+          <!-- PEDIDOS -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
+              <div class="card-body">
+                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
+                <h5 class="card-title">Pedidos</h5>
+                <p class="card-text">Realiza y registra los pedidos para los clientes.</p>
+                <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- ENTREGADOS -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
-              <h5 class="card-title">Estado de Pedidos</h5>
-              <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
-              <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+          <!-- ENTREGADOS -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
+              <div class="card-body">
+                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
+                <h5 class="card-title">Estado de Pedidos</h5>
+                <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
+                <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+              </div>
             </div>
           </div>
-        </div>
 
 
-        <!-- GASTOS -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">💸</div>
-              <h5 class="card-title">Gastos</h5>
-              <p class="card-text">Registra los gastos diarios como domicilios o pago a empleados.</p>
-              <a href="gastos.php" class="btn btn-primary">Ir a Gastos</a>
+          <!-- GASTOS -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
+              <div class="card-body">
+                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">💸</div>
+                <h5 class="card-title">Gastos</h5>
+                <p class="card-text">Registra los gastos diarios como domicilios o pago a empleados.</p>
+                <a href="gastos.php" class="btn btn-primary">Ir a Gastos</a>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- INFORMES -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📊</div>
-              <h5 class="card-title">Informes</h5>
-              <p class="card-text">Descarga los informes mensuales y diarios para la contabilidad de tu negocio.</p>
-              <a href="informes.php" class="btn btn-primary">Ir a Informes</a>
+          <!-- INFORMES -->
+          <div class="col-md-6 col-lg-3">
+            <div class="card text-center shadow-sm h-100">
+              <div class="card-body">
+                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">📊</div>
+                <h5 class="card-title">Informes</h5>
+                <p class="card-text">Descarga los informes mensuales y diarios para la contabilidad de tu negocio.</p>
+                <a href="informes.php" class="btn btn-primary">Ir a Informes</a>
+              </div>
             </div>
           </div>
+
+        </div>
         </div>
 
-      </div>
-      </div>
+        <!-- VISTA DEL VENDEDOR (GUIA DE PREPARACION, PEDIDOS Y ESTADOS DE PEDIDOS) -->
 
-      <!-- VISTA DEL VENDEDOR (GUIA DE PREPARACION, PEDIDOS Y ESTADOS DE PEDIDOS) -->
-
-    <?php endif;
-    elseif ($role === 'seller' && $_SESSION['inventory_mode'] !== 'pedidos'): ?>
+      <?php endif;
+      elseif ($role === 'seller' && $_SESSION['inventory_mode'] !== 'pedidos'): ?>
       <div class="container py-4">
         <h2 class="mb-4">Panel del Vendedor</h2>
         <div class="row g-4">
@@ -566,90 +572,90 @@ if (isset($_SESSION['blocked_message'])): ?>
     <?php if ($_SESSION['inventory_mode'] === 'pedidos'): ?>
 
       <div class="container py-4">
-        
+
 
         <div class="row g-4">
 
           <?php if ($role === 'user'): ?>
             <!-- ADMIN -->
 
-          <!-- PRODUCTOS -->
-        <div class="col-md-6 col-lg-3">
-          <div class="card text-center shadow-sm h-100">
-            <div class="card-body">
-              <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🍽️</div>
-              <h5 class="card-title">Recetas</h5>
-              <p class="card-text">Ingresa los ingredientes para los productos de tu menú</p>
-              <a href="productos.php" class="btn btn-primary">Ir a Productos</a>
-            </div>
-          </div>
-        </div>
-
-          <!-- PEDIDOS -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card text-center shadow-sm h-100">
-              <div class="card-body">
-                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
-                <h5 class="card-title">Pedidos</h5>
-                <p class="card-text">Realiza y registra los pedidos de los clientes.</p>
-                <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
+            <!-- PRODUCTOS -->
+            <div class="col-md-6 col-lg-3">
+              <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                  <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🍽️</div>
+                  <h5 class="card-title">Recetas</h5>
+                  <p class="card-text">Ingresa los ingredientes para los productos de tu menú</p>
+                  <a href="productos.php" class="btn btn-primary">Ir a Productos</a>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- ESTADO DE PEDIDOS -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card text-center shadow-sm h-100">
-              <div class="card-body">
-                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
-                <h5 class="card-title">Estado de pedidos</h5>
-                <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
-                <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+            <!-- PEDIDOS -->
+            <div class="col-md-6 col-lg-4">
+              <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                  <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
+                  <h5 class="card-title">Pedidos</h5>
+                  <p class="card-text">Realiza y registra los pedidos de los clientes.</p>
+                  <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
+                </div>
               </div>
             </div>
-          </div>
+
+            <!-- ESTADO DE PEDIDOS -->
+            <div class="col-md-6 col-lg-4">
+              <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                  <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
+                  <h5 class="card-title">Estado de pedidos</h5>
+                  <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
+                  <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+                </div>
+              </div>
+            </div>
 
           <?php elseif ($role === 'waiter'): ?>
             <!-- WAITER -->
 
             <!-- PEDIDOS -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card text-center shadow-sm h-100">
-              <div class="card-body">
-                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
-                <h5 class="card-title">Pedidos</h5>
-                <p class="card-text">Realiza y registra los pedidos de los clientes.</p>
-                <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
+            <div class="col-md-6 col-lg-4">
+              <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                  <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">🛒</div>
+                  <h5 class="card-title">Pedidos</h5>
+                  <p class="card-text">Realiza y registra los pedidos de los clientes.</p>
+                  <a href="pedidos.php" class="btn btn-primary">Ir a Pedidos</a>
+                </div>
               </div>
             </div>
-          </div>
 
-          <!-- ESTADO DE PEDIDOS -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card text-center shadow-sm h-100">
-              <div class="card-body">
-                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
-                <h5 class="card-title">Estado de pedidos</h5>
-                <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
-                <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+            <!-- ESTADO DE PEDIDOS -->
+            <div class="col-md-6 col-lg-4">
+              <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                  <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
+                  <h5 class="card-title">Estado de pedidos</h5>
+                  <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
+                  <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+                </div>
               </div>
             </div>
-          </div>
 
           <?php elseif ($role === 'kitchen'): ?>
             <!-- KITCHEN -->
 
             <!-- ESTADO DE PEDIDOS -->
-          <div class="col-md-6 col-lg-4">
-            <div class="card text-center shadow-sm h-100">
-              <div class="card-body">
-                <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
-                <h5 class="card-title">Estado de pedidos</h5>
-                <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
-                <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+            <div class="col-md-6 col-lg-4">
+              <div class="card text-center shadow-sm h-100">
+                <div class="card-body">
+                  <div class="mb-3" style="font-size:2rem; color:#1f3b4d;">✅</div>
+                  <h5 class="card-title">Estado de pedidos</h5>
+                  <p class="card-text">Consulta los pedidos pendientes y entregados.</p>
+                  <a href="entregados.php" class="btn btn-primary">Ir a Estado de Pedidos</a>
+                </div>
               </div>
             </div>
-          </div>
 
           <?php endif; ?>
 

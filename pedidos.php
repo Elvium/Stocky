@@ -17,7 +17,7 @@ if (($_SESSION['role'] ?? '') === 'kitchen') {
 // --- Obtener productos con stock disponible ---
 $modo = $_SESSION['inventory_mode'] ?? 'controlado';
 
-if ($modo === 'simple') {
+if ($modo === 'simple' || $modo === 'pedidos') {
 
     // 🔹 MODO SIMPLE: no calcula stock
     $productos_stmt = $conexion->prepare("
@@ -79,8 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
     }
 
     // Marcar variable para saltar trigger
-    if ($modo !== 'simple') {
-
+    if ($modo === 'controlado') {
         // Marcar variable para saltar trigger
         $conexion->query("SET @SKIP_INVENTORY_LOG = 1");
 
@@ -180,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
                             <th>Producto</th>
                             <th>Precio</th>
 
-                            <?php if ($modo !== 'simple'): ?>
+                            <?php if ($modo === 'controlado'): ?>
                                 <th>Stock disponible</th>
                             <?php endif; ?>
 
@@ -194,13 +193,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
                                 <td><?= htmlspecialchars($p['name']) ?></td>
                                 <td>$<?= number_format($p['price'], 2) ?></td>
 
-                                <?php if ($modo !== 'simple'): ?>
+                                <?php if ($modo === 'controlado'): ?>
                                     <td class="stock"><?= $p['stock_disponible'] ?? 0 ?></td>
                                 <?php endif; ?>
 
                                 <td class="action">
 
-                                    <?php if ($modo === 'simple'): ?>
+                                    <?php if ($modo === 'simple' || $modo === 'pedidos'): ?>
 
                                         <!-- SIEMPRE DISPONIBLE -->
                                         <button class="btn btn-primary btn-sm agregar-btn">Agregar</button>
@@ -278,7 +277,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 
             // ---------------- JS de lógica de pedido ----------------
             const pedido = {}; // {id: {id, name, price, qty}}
-            if (MODO !== "simple") {
+            if (MODO === "controlado") {
                 // 🔹 Recalcular inventario restante global según el pedido
                 function calcularInventarioRestante() {
                     const restante = { ...inventoryStock };
@@ -344,7 +343,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 
                 let inventarioRestante = null;
 
-                if (MODO !== "simple") {
+                if (MODO === "controlado") {
                     inventarioRestante = calcularInventarioRestante();
                 }
 
@@ -355,7 +354,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
                     const tr = document.createElement('tr');
 
                     let stockDisponible = 9999;
-                    if (MODO !== "simple") {
+                    if (MODO === "controlado") {
                         stockDisponible = calcularStockProducto(item.id, inventarioRestante);
                     }
 
@@ -374,7 +373,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
                     // "+"
                     tr.querySelector('.plus-btn').addEventListener('click', () => {
 
-                        if (MODO === "simple") {
+                        if (MODO === "simple" || MODO === "pedidos") {
                             item.qty++;
                         } else {
                             const inventarioRestante = calcularInventarioRestante();
@@ -399,7 +398,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
 
                 document.getElementById('totalPedido').textContent = `$${total.toFixed(2)}`;
 
-                if (MODO !== "simple") {
+                if (MODO === "controlado") {
                     actualizarStockTabla();
                 }
             }
@@ -414,7 +413,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['pedido'])) {
                     const name = tr.cells[0].textContent;
                     const price = parseFloat(tr.dataset.price);
 
-                    if (MODO === "simple") {
+                    if (MODO === "simple" || MODO === "pedidos") {
 
                         if (!pedido[id]) {
                             pedido[id] = { id, name, price, qty: 1 };
