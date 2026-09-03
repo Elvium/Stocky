@@ -82,7 +82,8 @@
                     </p>
 
                     <div class="hero-actions">
-                        <a href="#contacto" class="btn btn-primary-stocky btn-lg">
+                        <a href="https://wa.me/573013620090?text=Hola%20Stocky%2C%20quiero%20conocer%20la%20aplicaci%C3%B3n."
+                            class="btn btn-primary" target="_blank">
                             Comienza aquí
                         </a>
 
@@ -448,7 +449,16 @@
     </section>
 
 
-    <!-- CONTACTO -->
+    <!-- =========================================================
+     SECCIÓN DE CONTACTO - DESACTIVADA TEMPORALMENTE
+     
+     Se conserva el código para implementarlo posteriormente
+     cuando se configure el sistema de envío de correos.
+     
+     NO ELIMINAR.
+========================================================= -->
+
+    <!--
     <section id="contacto" class="contact-section section-padding">
         <div class="container">
 
@@ -543,7 +553,11 @@
             </div>
         </div>
     </section>
+-->
 
+    <!-- =========================================================
+     FIN SECCIÓN DE CONTACTO
+========================================================= -->
 
     <!-- FOOTER -->
     <footer class="stocky-footer">
